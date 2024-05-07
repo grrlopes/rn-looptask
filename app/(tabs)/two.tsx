@@ -23,8 +23,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 4,
     height: 1,
     width: '80%',
+    backgroundColor: "#111111"
   },
 });

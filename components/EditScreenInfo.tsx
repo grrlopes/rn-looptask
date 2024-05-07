@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {  StyleSheet, Text, View } from 'react-native';
 
 import { ExternalLink } from './ExternalLink';
 
@@ -31,7 +31,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
           style={styles.helpLink}
           href="https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet">
           <Text style={styles.helpLinkText} >
-            Tap here if your app doesn't automatically update after making changes
+            Hehehehe Tap here if your app doesn't automatically update after making changes
           </Text>
         </ExternalLink>
       </View>
@@ -66,5 +66,6 @@ const styles = StyleSheet.create({
   },
   helpLinkText: {
     textAlign: 'center',
+    fontWeight: 'bold'
   },
 });
