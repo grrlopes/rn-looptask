@@ -1,9 +1,9 @@
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 export default function TabOneScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView style={styles.scroll}>
         <View style={styles.newestContainer}>
           <Text style={styles.newestTitle}>Newest dough</Text>
           <Text style={styles.newestTitle}>view history</Text>
@@ -32,6 +32,9 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#efef8f"
+  },
+  scroll: {
     marginHorizontal: 16,
   },
   newestContainer: {
