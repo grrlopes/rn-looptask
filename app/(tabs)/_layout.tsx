@@ -22,7 +22,7 @@ export default function TabLayout() {
         // to prevent a hydration error in React Navigation v6.
         headerShown: true,
         tabBarLabelStyle: { fontWeight: 'bold', fontSize: 12 },
-        headerStyle: { backgroundColor: "#1FE68F" },
+        headerStyle: { backgroundColor: "#757575" },
       }}>
       <Tabs.Screen
         name="index"
