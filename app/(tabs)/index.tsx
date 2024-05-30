@@ -1,53 +1,70 @@
+import { fetchAll } from '@/api/label';
 import Colors from '@/constants/Colors';
 import { Button } from '@rneui/themed';
-import { Platform, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useQuery } from '@tanstack/react-query';
+import { ActivityIndicator, Platform, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+
+export interface Labeled {
+  id: string
+  tray: Tray[]
+  createdAt: string
+  creator: string
+}
+
+export interface Tray {
+  id: string
+  trayId: string
+  user: string
+  createdAt: string
+}
 
 export default function TabOneScreen() {
+  const { data, isLoading, error } = useQuery<[Labeled]>({
+    queryKey: ['label'],
+    queryFn: fetchAll,
+  });
+
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+
+  console.log(data)
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scroll}>
+      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         <View style={styles.newestContainer}>
           <Text style={styles.newestTitle}>Current week</Text>
         </View>
         <View style={styles.labelContainer}>
           <Text style={styles.newestTitle}>Labeled</Text>
-          <Text style={styles.newestTitle}>Count</Text>
+          <Text style={styles.newestTitle}>Total</Text>
         </View>
 
-        <View style={styles.newestMainContentContainer}>
-          <View style={styles.newestContentContainer}>
-            <View style={styles.newestContentDate}>
-              <Text>Wed</Text>
-              <Text>8</Text>
-              <Text>MAY</Text>
+        {data?.map(item => {
+          const dateparse = new Date(item.createdAt)
+          return (
+            <View style={styles.newestMainContentContainer} key={item.id}>
+              <View style={styles.newestContentContainer}>
+                <View style={styles.newestContentDate}>
+                  <Text>{dateparse.toLocaleDateString('en-us', { weekday:"short"})}</Text>
+                  <Text>{dateparse.getUTCDate()}</Text>
+                  <Text>{dateparse.toLocaleString('en-us', {month: "short"})}</Text>
+                </View>
+                <View>
+                  <Text>{item.createdAt}</Text>
+                  <Text>{item.id}</Text>
+                  <Text>{item.creator}</Text>
+                </View>
+                <View style={styles.newestContentQty}>
+                  <Text>{item.tray.length}</Text>
+                </View>
+              </View>
             </View>
-            <View>
-              <Text>11:00 a.m - 06.00 p.m</Text>
-              <Text>code</Text>
-              <Text>creator</Text>
-            </View>
-            <View style={styles.newestContentQty}>
-              <Text>10</Text>
-            </View>
-          </View>
+          )
+        })}
 
-          <View style={styles.newestContentContainer}>
-            <View style={styles.newestContentDate}>
-              <Text>Tue</Text>
-              <Text>25</Text>
-              <Text>Sept</Text>
-            </View>
-            <View>
-              <Text>08:40 a.m - 03.00 p.m</Text>
-              <Text>code</Text>
-              <Text>creator</Text>
-            </View>
-            <View style={styles.newestContentQty}>
-              <Text>98</Text>
-            </View>
-          </View>
-
-        </View>
       </ScrollView>
     </SafeAreaView >
   );
@@ -57,7 +74,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#E0E0E0",
-    paddingTop: Platform.OS === 'android' ? 25 : 0
+    // paddingTop: Platform.OS === 'android' ? 25 : 0
   },
   scroll: {
     marginHorizontal: 16,

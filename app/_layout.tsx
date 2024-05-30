@@ -1,4 +1,5 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -41,15 +42,20 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
+
+const queryClient = new QueryClient()
+
 function RootLayoutNav() {
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="modal" options={{
-        presentation: 'modal',
-        headerStyle: { backgroundColor: "#1FE68F" },
-      }}
-      />
-    </Stack>
+    <QueryClientProvider client={queryClient}>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="modal" options={{
+          presentation: 'modal',
+          headerStyle: { backgroundColor: "#1FE68F" },
+        }}
+        />
+      </Stack>
+    </QueryClientProvider>
   );
 }
