@@ -27,7 +27,7 @@ export default function labeled() {
       <FlatList
         data={data?.tray}
         numColumns={2}
-        renderItem={({ item }) => <LabelById labels={item} />}
+        renderItem={({ item, index }) => <LabelById labels={item} count={index} />}
         keyExtractor={item => item.id}
       />
     </SafeAreaView>

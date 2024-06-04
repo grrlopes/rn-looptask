@@ -14,6 +14,7 @@ export interface Labeled {
 export interface Tray {
   id: string
   trayId: string
+  size: string
   user: string
   createdAt: string
 }
