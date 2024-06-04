@@ -30,6 +30,10 @@ export default function TabOneScreen() {
     return <ActivityIndicator />;
   }
 
+  if (error) {
+    return <Text>{error.message}</Text>;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>

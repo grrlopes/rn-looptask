@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { Labeled, Tray } from '@/app/(tabs)'
+import { Tray } from '@/app/(tabs)'
 import { Card, Text as Texty } from '@rneui/themed';
 import { CardDivider } from '@rneui/base/dist/Card/Card.Divider';
 
@@ -28,7 +28,6 @@ const LabelById = ({ labels, count }: { labels: Tray, count: number }) => {
           <View style={styles.cardTrayid}>
             <Text numberOfLines={1}>{labels.trayId}</Text>
           </View>
-
         </View>
       </Card>
     </View>
