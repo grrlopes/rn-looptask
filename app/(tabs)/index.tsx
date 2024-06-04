@@ -1,8 +1,8 @@
 import { fetchAll } from '@/api/label';
-import Colors from '@/constants/Colors';
-import { Button } from '@rneui/themed';
 import { useQuery } from '@tanstack/react-query';
-import { ActivityIndicator, Platform, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Link } from 'expo-router';
+import { useState } from 'react';
+import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export interface Labeled {
   id: string
@@ -19,17 +19,15 @@ export interface Tray {
 }
 
 export default function TabOneScreen() {
+  const [value, setValue] = useState<any>()
   const { data, isLoading, error } = useQuery<[Labeled]>({
-    queryKey: ['label'],
+    queryKey: ['labels'],
     queryFn: fetchAll,
   });
 
   if (isLoading) {
     return <ActivityIndicator />;
   }
-
-
-  console.log(data)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -38,6 +36,7 @@ export default function TabOneScreen() {
           <Text style={styles.newestTitle}>Current week</Text>
         </View>
         <View style={styles.labelContainer}>
+
           <Text style={styles.newestTitle}>Labeled</Text>
           <Text style={styles.newestTitle}>Total</Text>
         </View>
@@ -45,23 +44,27 @@ export default function TabOneScreen() {
         {data?.map(item => {
           const dateparse = new Date(item.createdAt)
           return (
-            <View style={styles.newestMainContentContainer} key={item.id}>
-              <View style={styles.newestContentContainer}>
-                <View style={styles.newestContentDate}>
-                  <Text>{dateparse.toLocaleDateString('en-us', { weekday:"short"})}</Text>
-                  <Text>{dateparse.getUTCDate()}</Text>
-                  <Text>{dateparse.toLocaleString('en-us', {month: "short"})}</Text>
+            <Link href={{ pathname: "/modals/labeled", params: { id: value, } }} asChild key={item.id}>
+              <TouchableOpacity onPressIn={() => setValue(item.id)}>
+                <View style={styles.newestMainContentContainer}>
+                  <View style={styles.newestContentContainer}>
+                    <View style={styles.newestContentDate}>
+                      <Text>{dateparse.toLocaleDateString('en-us', { weekday: "short" })}</Text>
+                      <Text>{dateparse.getUTCDate()}</Text>
+                      <Text>{dateparse.toLocaleString('en-us', { month: "short" })}</Text>
+                    </View>
+                    <View>
+                      <Text>{item.createdAt}</Text>
+                      <Text>{item.id}</Text>
+                      <Text>{item.creator}</Text>
+                    </View>
+                    <View style={styles.newestContentQty}>
+                      <Text>{item.tray.length}</Text>
+                    </View>
+                  </View>
                 </View>
-                <View>
-                  <Text>{item.createdAt}</Text>
-                  <Text>{item.id}</Text>
-                  <Text>{item.creator}</Text>
-                </View>
-                <View style={styles.newestContentQty}>
-                  <Text>{item.tray.length}</Text>
-                </View>
-              </View>
-            </View>
+              </TouchableOpacity>
+            </Link>
           )
         })}
 

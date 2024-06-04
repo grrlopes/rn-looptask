@@ -55,6 +55,12 @@ function RootLayoutNav() {
           headerStyle: { backgroundColor: "#1FE68F" },
         }}
         />
+        <Stack.Screen name="modals/labeled" options={{
+          title: "",
+          presentation: 'modal',
+          headerStyle: { backgroundColor: "#1FE68F" },
+        }}
+        />
       </Stack>
     </QueryClientProvider>
   );
