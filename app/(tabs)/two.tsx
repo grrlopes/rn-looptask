@@ -1,7 +1,5 @@
 import { Platform, StyleSheet, Text, View } from 'react-native';
-
 import EditScreenInfo from '@/components/EditScreenInfo';
-import AgendaScreen from '@/components/AgendaCalendar';
 
 export default function TabTwoScreen() {
   return (

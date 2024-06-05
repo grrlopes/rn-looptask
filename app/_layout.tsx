@@ -4,7 +4,6 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { Text, View } from 'react-native';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -22,6 +21,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Roboto: require('../assets/fonts/Roboto-Regular.ttf'),
     ...FontAwesome.font,
   });
 
