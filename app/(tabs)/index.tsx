@@ -54,9 +54,9 @@ export default function TabOneScreen() {
                 <View style={styles.newestMainContentContainer}>
                   <View style={styles.newestContentContainer}>
                     <View style={styles.newestContentDate}>
-                      <Text>{dateparse.toLocaleDateString('en-us', { weekday: "short" })}</Text>
-                      <Text>{dateparse.getUTCDate()}</Text>
-                      <Text>{dateparse.toLocaleString('en-us', { month: "short" })}</Text>
+                      <Text style={{ color: "darkblue" }}>{dateparse.toLocaleDateString('en-us', { weekday: "short" })}</Text>
+                      <Text style={{ fontWeight: "600" }}>{dateparse.getUTCDate()}</Text>
+                      <Text style={{ fontWeight: "400" }}>{dateparse.toLocaleString('en-us', { month: "short" })}</Text>
                     </View>
                     <View>
                       <Text>{item.createdAt}</Text>
