@@ -1,4 +1,5 @@
 import { fetchAll } from '@/api/label';
+import Colors from '@/constants/Colors';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'expo-router';
 import { useState } from 'react';
@@ -17,6 +18,7 @@ export interface Tray {
   size: string
   user: string
   createdAt: string
+  done: boolean
 }
 
 export default function TabOneScreen() {
@@ -59,8 +61,8 @@ export default function TabOneScreen() {
                       <Text style={{ fontWeight: "400" }}>{dateparse.toLocaleString('en-us', { month: "short" })}</Text>
                     </View>
                     <View>
-                      <Text>{item.createdAt}</Text>
-                      <Text>{item.id}</Text>
+                      <Text style={{ fontWeight: "600", color: "#000000" }}>{dateparse.getFullYear()}</Text>
+                      <Text style={{ fontWeight: "400" }}>{item.id}</Text>
                       <Text>{item.creator}</Text>
                     </View>
                     <View style={styles.newestContentQty}>
@@ -116,6 +118,6 @@ const styles = StyleSheet.create({
   },
   newestContentQty: {
     alignItems: "center",
-    paddingLeft: 40
+    paddingLeft: 58
   },
 });

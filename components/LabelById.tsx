@@ -1,37 +1,36 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Tray } from '@/app/(tabs)'
-import { Text as Texty } from '@rneui/themed';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const LabelById = ({ labels, count }: { labels: Tray, count: number }) => {
   const dateparse = new Date(labels.createdAt)
   return (
-      <View style={styles.container}>
-        <View style={styles.cardCount}>
-          <Texty h4>{count + 1}</Texty>
-        </View>
-        <View style={styles.cardSize}>
-          <Text>{labels.size}</Text>
-        </View>
-        <View style={styles.cardTime}>
-          <Text>
-            {dateparse.getHours()}:{dateparse.getMinutes()}
-          </Text>
-        </View>
-        <View style={styles.cardUser}>
-          <Text numberOfLines={1}>{labels.user}</Text>
-        </View>
-        <View style={styles.cardTrayid}>
-          <Text numberOfLines={1}>{labels.trayId}</Text>
-        </View>
+    <View style={styles().container}>
+      <View style={styles(labels.done).cardCount}>
+        <Text>{count + 1}</Text>
       </View>
+      <View style={styles().cardSize}>
+        <Text style={{ fontWeight: "600" }}>{labels.size}</Text>
+      </View>
+      <View style={styles().cardTime}>
+        <Text>
+          {dateparse.getHours()}:{dateparse.getMinutes()}
+          {dateparse.getHours() <= 12 ? " am" : " pm"}
+        </Text>
+      </View>
+      <View style={styles().cardUser}>
+        <Text numberOfLines={1}>{labels.user}</Text>
+      </View>
+      <View style={styles().cardTrayid}>
+        <Text numberOfLines={1}>{labels.trayId}</Text>
+      </View>
+    </View>
   );
 };
 
 export default LabelById;
 
-const styles = StyleSheet.create({
+const styles = (done?: boolean) => StyleSheet.create({
   container: {
     flex: 1,
     height: 140,
@@ -53,13 +52,21 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   cardSize: {
-    alignItems: "center"
+    alignItems: "center",
   },
   cardUser: {
     paddingTop: 10
   },
   cardCount: {
-    alignItems: "flex-start",
+    position: "absolute",
+    top: -3,
+    left: -3,
+    width: 23,
+    alignItems: "center",
+    backgroundColor: done ? "lightgrey" : "orange",
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: "#FFFFFF",
   },
   cardTrayid: {
     paddingTop: 10

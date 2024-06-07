@@ -43,7 +43,6 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
-
 const queryClient = new QueryClient()
 
 function RootLayoutNav() {
@@ -59,7 +58,7 @@ function RootLayoutNav() {
         <Stack.Screen name="modals/labeled" options={{
           title: "",
           presentation: 'modal',
-          headerStyle: { backgroundColor: "#1FE68F" },
+          headerStyle: { backgroundColor: "#757575" },
         }}
         />
       </Stack>
