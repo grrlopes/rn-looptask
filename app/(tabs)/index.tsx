@@ -1,5 +1,5 @@
 import { fetchAll } from '@/api/label';
-import Colors from '@/constants/Colors';
+import CurrentWeek from '@/components/CurrentWeek';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'expo-router';
 import { useState } from 'react';
@@ -22,7 +22,7 @@ export interface Tray {
 }
 
 export default function TabOneScreen() {
-  const [value, setValue] = useState<any>()
+  const [value, setValue] = useState<string>("")
   const { data, isLoading, error } = useQuery<[Labeled]>({
     queryKey: ['labels'],
     queryFn: fetchAll,
@@ -43,35 +43,13 @@ export default function TabOneScreen() {
           <Text style={styles.newestTitle}>Current week</Text>
         </View>
         <View style={styles.labelContainer}>
-
           <Text style={styles.newestTitle}>Labeled</Text>
           <Text style={styles.newestTitle}>Total</Text>
         </View>
-
         {data?.map(item => {
           const dateparse = new Date(item.createdAt)
           return (
-            <Link href={{ pathname: "/modals/labeled", params: { id: value, } }} asChild key={item.id}>
-              <TouchableOpacity onPressIn={() => setValue(item.id)}>
-                <View style={styles.newestMainContentContainer}>
-                  <View style={styles.newestContentContainer}>
-                    <View style={styles.newestContentDate}>
-                      <Text style={{ color: "darkblue" }}>{dateparse.toLocaleDateString('en-us', { weekday: "short" })}</Text>
-                      <Text style={{ fontWeight: "600" }}>{dateparse.getUTCDate()}</Text>
-                      <Text style={{ fontWeight: "400" }}>{dateparse.toLocaleString('en-us', { month: "short" })}</Text>
-                    </View>
-                    <View>
-                      <Text style={{ fontWeight: "600", color: "#000000" }}>{dateparse.getFullYear()}</Text>
-                      <Text style={{ fontWeight: "400" }}>{item.id}</Text>
-                      <Text>{item.creator}</Text>
-                    </View>
-                    <View style={styles.newestContentQty}>
-                      <Text>{item.tray.length}</Text>
-                    </View>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </Link>
+            <CurrentWeek dateParse={dateparse} items={item} key={item.id}/>
           )
         })}
 
@@ -117,7 +95,6 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   newestContentQty: {
-    alignItems: "center",
-    paddingLeft: 58
+    paddingLeft: 100
   },
 });

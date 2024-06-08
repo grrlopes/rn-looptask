@@ -15,7 +15,7 @@ const LabelById = ({ labels, count }: { labels: Tray, count: number }) => {
       <View style={styles().cardTime}>
         <Text>
           {dateparse.getHours()}:{dateparse.getMinutes()}
-          {dateparse.getHours() <= 12 ? " am" : " pm"}
+          {dateparse.getHours() < 12 ? " am" : " pm"}
         </Text>
       </View>
       <View style={styles().cardUser}>
