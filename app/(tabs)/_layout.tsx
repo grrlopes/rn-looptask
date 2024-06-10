@@ -32,7 +32,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="bookmark" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -47,6 +47,14 @@ export default function TabLayout() {
               </Pressable>
             </Link>
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="barcode"
+        options={{
+          title: '',
+          headerShown: true,
+          tabBarIcon: ({ color }) => <TabBarIcon name="camera-retro" color={color} />,
         }}
       />
       <Tabs.Screen
