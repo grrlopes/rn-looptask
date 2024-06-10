@@ -36,42 +36,28 @@ const CurrentWeek = (props: Props) => {
 export default CurrentWeek
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#E0E0E0",
-    // paddingTop: Platform.OS === 'android' ? 25 : 0
-  },
-  scroll: {
-    marginHorizontal: 16,
-  },
-  newestContainer: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: 5,
-  },
-  newestTitle: {
-    fontSize: 17,
-  },
   newestContentContainer: {
     flexDirection: "row",
     columnGap: 26,
-    paddingBottom: 20,
+    paddingTop: 5,
+    paddingBottom: 5,
   },
   newestMainContentContainer: {
     flex: 1,
     flexDirection: "column",
-  },
-  labelContainer: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: 10
+    backgroundColor: "#FFFFFF",
+    marginBottom: 10
   },
   newestContentDate: {
     alignItems: "center"
   },
   newestContentQty: {
-    paddingLeft: 100
+    alignSelf: "center",
+    marginLeft: 115,
+    alignItems: "center",
+    backgroundColor: "lightgrey",
+    borderRadius: 100,
+    height: 20,
+    width: 20
   },
 });

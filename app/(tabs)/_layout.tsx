@@ -25,7 +25,7 @@ export default function TabLayout() {
           borderTopWidth: 0,
           padding: 0,
         },
-        headerStyle: { backgroundColor: "#757575" },
+        headerStyle: { height: 55, backgroundColor: "#757575" },
         tabBarShowLabel: false,
       }}>
       <Tabs.Screen
