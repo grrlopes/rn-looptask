@@ -24,7 +24,9 @@ const CurrentWeek = (props: Props) => {
               <Text>{props.items.creator}</Text>
             </View>
             <View style={styles.newestContentQty}>
-              <Text>{props.items.tray.length}</Text>
+              <View style={styles.qtyTxt}>
+                <Text>{props.items.tray.length}</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -52,12 +54,16 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   newestContentQty: {
+    flex: 1,
     alignSelf: "center",
-    marginLeft: 115,
+    alignItems: "flex-end",
+  },
+  qtyTxt: {
     alignItems: "center",
     backgroundColor: "lightgrey",
     borderRadius: 100,
+    marginRight: 4,
     height: 20,
     width: 20
-  },
+  }
 });
