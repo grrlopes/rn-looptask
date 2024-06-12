@@ -25,7 +25,7 @@ const CurrentWeek = (props: Props) => {
             </View>
             <View style={styles.newestContentQty}>
               <View style={styles.qtyTxt}>
-                <Text>{props.items.tray.length}</Text>
+                <Text>{props.items.tray?.length}</Text>
               </View>
             </View>
           </View>

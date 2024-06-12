@@ -26,7 +26,7 @@ export default function TabOneScreen() {
   });
 
   if (isLoading) {
-    return <ActivityIndicator />;
+    return <ActivityIndicator size={'large'} />;
   }
 
   if (error) {

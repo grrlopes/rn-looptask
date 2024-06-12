@@ -1,3 +1,5 @@
+import { Labeled } from "@/app/(tabs)";
+
 const headers = {
   accept: 'application/json',
 };
@@ -19,7 +21,7 @@ export const fetchAll = async () => {
   return json;
 };
 
-export const fetchOneById = async (id: string) => {
+export const fetchOneById = async (id: any) => {
   const url = `http://192.168.2.26:3000/label?id=${id}`;
   const options = {
     method: 'GET',
@@ -35,4 +37,33 @@ export const fetchOneById = async (id: string) => {
   const json = await res.json();
 
   return json[0];
+};
+
+export const addNewTray = async (data: any) => {
+  const url = 'http://192.168.2.26:3000/label?id=87ddudk0nm';
+  const options = {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify(data)
+    // body: JSON.stringify({
+    //   id: Math.random(),
+    //   trayId: Math.random(),
+    //   size: "small",
+    //   user: "Paul McCarteney",
+    //   createdAt: new Date(),
+    //   done: false
+    // }),
+  };
+
+  const res = await fetch(url, options);
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch Labeled');
+  }
+
+  const json = await res.json();
+  return json;
 };

@@ -25,14 +25,14 @@ export default function TabLayout() {
           borderTopWidth: 0,
           padding: 0,
         },
-        headerStyle: { height: 55, backgroundColor: "#757575" },
+        headerStyle: { backgroundColor: "#757575" },
         tabBarShowLabel: false,
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => <TabBarIcon name="bookmark" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
