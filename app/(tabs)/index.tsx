@@ -3,24 +3,47 @@ import CurrentWeek from '@/components/CurrentWeek';
 import { useQuery } from '@tanstack/react-query';
 import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-export interface Labeled {
+
+export interface LabeledStack {
+  error: string
+  message: message[]
+  success: boolean
+}
+
+interface message {
   id: string
-  tray: Tray[]
-  createdAt: string
-  creator: string
+  trays: Tray[]
+  created_at: string
+  updated_at: string
+  owner: string
+  tray_count: number
+}
+
+export interface Labeled {
+  error: string
+  message: message
+  success: boolean
 }
 
 export interface Tray {
   id: string
-  trayId: string
+  trayid: string
   size: string
-  user: string
-  createdAt: string
+  userid: User
   done: boolean
+  created_at: string
+  updated_at: string
+}
+
+interface User {
+  id: string
+  name: string
+  surname: string
+  email: string
 }
 
 export default function TabOneScreen() {
-  const { data, isLoading, error } = useQuery<[Labeled]>({
+  const { data, isLoading, error } = useQuery<LabeledStack>({
     queryKey: ['labels'],
     queryFn: fetchAll,
   });
@@ -30,7 +53,7 @@ export default function TabOneScreen() {
   }
 
   if (error) {
-    return <Text>{error.message}</Text>;
+    return <Text>{error.message}, ddsfs</Text>;
   }
 
   return (
@@ -54,22 +77,25 @@ export default function TabOneScreen() {
           <Text style={styles.newestLabel}>Labeled</Text>
           <Text style={styles.newestLabel}>Total</Text>
         </View>
-        {data?.map(item => {
-          const dateparse = new Date(item.createdAt)
-          return (
-            <CurrentWeek dateParse={dateparse} items={item} key={item.id} />
-          )
-        })}
-
+        {
+          data?.message.map(item => {
+            const dateparse = new Date(item.created_at)
+            return (
+              <CurrentWeek dateParse={dateparse} key={item.id} id={item.id} owner={item.owner} trayCount={item.tray_count} />
+            )
+          })
+        }
         <View style={styles.PreviewsWeekContainer}>
           <Text style={styles.newestTitle}>Previews Week</Text>
         </View>
-        {data?.map(item => {
-          const dateparse = new Date(item.createdAt)
-          return (
-            <CurrentWeek dateParse={dateparse} items={item} key={item.id} />
-          )
-        })}
+        {
+          // data?.message.map(item => {
+          //   const dateparse = new Date(item.created_at)
+          //   return (
+          //     <CurrentWeek dateParse={dateparse} items={item} key={item.id} />
+          //   )
+          // })
+        }
 
       </ScrollView>
     </SafeAreaView >

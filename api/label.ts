@@ -2,10 +2,11 @@ import { Labeled } from "@/app/(tabs)";
 
 const headers = {
   accept: 'application/json',
+  'Content-Type': 'application/json'
 };
 
 export const fetchAll = async () => {
-  const url = `http://192.168.2.26:3000/label`;
+  const url = `http://192.168.2.26:8080/listalltraystack`;
   const options = {
     method: 'GET',
     headers,
@@ -22,10 +23,11 @@ export const fetchAll = async () => {
 };
 
 export const fetchOneById = async (id: any) => {
-  const url = `http://192.168.2.26:3000/label?id=${id}`;
+  const url = `http://192.168.2.26:8080/fetchonelabel`;
   const options = {
-    method: 'GET',
+    method: 'POST',
     headers,
+    body: JSON.stringify({ id: id })
   };
 
   const res = await fetch(url, options);
@@ -36,7 +38,7 @@ export const fetchOneById = async (id: any) => {
 
   const json = await res.json();
 
-  return json[0];
+  return json;
 };
 
 export const addNewTray = async (data: any) => {

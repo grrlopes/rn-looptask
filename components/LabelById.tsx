@@ -3,7 +3,8 @@ import React from 'react'
 import { Tray } from '@/app/(tabs)'
 
 const LabelById = ({ labels, count }: { labels: Tray, count: number }) => {
-  const dateparse = new Date(labels.createdAt)
+  console.log(labels.created_at)
+  const dateparse = new Date(labels.created_at)
   return (
     <View style={styles().container}>
       <View style={styles(labels.done).cardCount}>
@@ -19,10 +20,10 @@ const LabelById = ({ labels, count }: { labels: Tray, count: number }) => {
         </Text>
       </View>
       <View style={styles().cardUser}>
-        <Text numberOfLines={1}>{labels.user}</Text>
+        <Text numberOfLines={1}>{labels.userid.name} {labels.userid.surname}</Text>
       </View>
       <View style={styles().cardTrayid}>
-        <Text numberOfLines={1}>{labels.trayId}</Text>
+        <Text numberOfLines={1}>{labels.trayid}</Text>
       </View>
     </View>
   );

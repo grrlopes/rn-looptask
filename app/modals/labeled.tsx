@@ -1,8 +1,7 @@
-import { ActivityIndicator, FlatList,  Text, View } from 'react-native'
-import React, { useState } from 'react'
+import { ActivityIndicator, FlatList, Text, View } from 'react-native'
 import { useGlobalSearchParams } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
-import { Labeled, Tray } from '../(tabs)';
+import { Labeled } from '../(tabs)';
 import { fetchOneById } from '@/api/label';
 import LabelById from '@/components/LabelById';
 
@@ -14,7 +13,7 @@ export default function labeled() {
   });
 
   if (isLoading) {
-    return <ActivityIndicator />;
+    return <ActivityIndicator size={"large"} color={"#000000"} style={{ flex: 1, alignItems: "center" }} />;
   }
 
   if (error) {
@@ -25,7 +24,7 @@ export default function labeled() {
     <View style={{ backgroundColor: "#E0E0E0", flex: 1 }}>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={data?.tray}
+        data={data?.message.trays}
         numColumns={2}
         renderItem={({ item, index }) => <LabelById labels={item} count={index} />}
         keyExtractor={item => item.id}
@@ -33,4 +32,3 @@ export default function labeled() {
     </View>
   )
 }
-
