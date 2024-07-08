@@ -1,12 +1,17 @@
-import { Labeled } from "@/app/(tabs)";
+const Env = {
+  API_ADDR: "192.168.2.26",
+  PORT: 8080,
+  Token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2N2QwNTdkYjk1OTY1MzU1ZDIzNGM0ZSIsIm5hbWUiOiJiYWxlaWEiLCJzdXJuYW1lIjoid2hhbGVlZWUiLCJlbWFpbCI6ImJhbGVpYUBiYWxlaXJhLmNvbSIsInBhc3N3b3JkIjoiKioqIiwiY3JlYXRlZF9hdCI6IjIwMjQtMDYtMjdUMDY6MjM6NTYuNDc2WiIsInVwZGF0ZWRfYXQiOiIyMDI0LTA2LTI3VDA2OjIzOjU2LjQ3NloiLCJleHAiOjE3MjA1NzE0MTQsImlhdCI6MTcyMDM5ODYxNH0._fmf0nU5bU6dzu0svNw3CBo1zWTwrpUEkG1DejTtxhE"
+};
 
 const headers = {
   accept: 'application/json',
-  'Content-Type': 'application/json'
+  // 'Content-Type': 'application/json',
+  Authorization: 'Bearer ' + Env.Token,
 };
 
 export const fetchAll = async () => {
-  const url = `http://192.168.2.26:8080/listalltraystack`;
+  const url = `http://${Env.API_ADDR}:${Env.PORT}/listalltraystack`;
   const options = {
     method: 'GET',
     headers,
@@ -23,11 +28,10 @@ export const fetchAll = async () => {
 };
 
 export const fetchOneById = async (id: any) => {
-  const url = `http://192.168.2.26:8080/fetchonelabel`;
+  const url = `http://${Env.API_ADDR}:${Env.PORT}/fetchonelabel?id=${id}`;
   const options = {
-    method: 'POST',
+    method: 'GET',
     headers,
-    body: JSON.stringify({ id: id })
   };
 
   const res = await fetch(url, options);
@@ -50,14 +54,6 @@ export const addNewTray = async (data: any) => {
       'content-type': 'application/json',
     },
     body: JSON.stringify(data)
-    // body: JSON.stringify({
-    //   id: Math.random(),
-    //   trayId: Math.random(),
-    //   size: "small",
-    //   user: "Paul McCarteney",
-    //   createdAt: new Date(),
-    //   done: false
-    // }),
   };
 
   const res = await fetch(url, options);

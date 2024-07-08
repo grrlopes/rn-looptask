@@ -1,6 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Link } from 'expo-router'
-import { Labeled } from '@/app/(tabs)'
 
 interface Props {
   dateParse: Date;

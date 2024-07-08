@@ -27,7 +27,7 @@ const barcode = () => {
     createdAt: new Date().toString(),
     done: false
   }
-  data?.tray.push(bla)
+  // data?.message.trays.push(bla)
   // console.log(JSON.stringify(data))
 
   const { mutate } = useMutation({

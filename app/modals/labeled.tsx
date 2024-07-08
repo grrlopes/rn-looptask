@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Labeled } from '../(tabs)';
 import { fetchOneById } from '@/api/label';
 import LabelById from '@/components/LabelById';
+import ErrorPage from '@/components/ErrorPage';
 
 export default function labeled() {
   const { id } = useGlobalSearchParams<{ id: string }>();
@@ -13,15 +14,17 @@ export default function labeled() {
   });
 
   if (isLoading) {
-    return <ActivityIndicator size={"large"} color={"#000000"} style={{ flex: 1, alignItems: "center" }} />;
+    return <ActivityIndicator size={"large"} color={"#000000"} style={{ flex: 1, alignItems: "center", backgroundColor: "#E0E0E0" }} />;
   }
 
   if (error) {
-    return <Text>{error.message}</Text>;
+    return (
+      <ErrorPage message={error.message} />
+    )
   }
 
   return (
-    <View style={{ backgroundColor: "#E0E0E0", flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <FlatList
         showsVerticalScrollIndicator={false}
         data={data?.message.trays}

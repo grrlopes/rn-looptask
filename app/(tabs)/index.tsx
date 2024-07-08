@@ -49,11 +49,11 @@ export default function TabOneScreen() {
   });
 
   if (isLoading) {
-    return <ActivityIndicator size={'large'} />;
+    return <ActivityIndicator size={"large"} color={"#000000"} style={{ flex: 1, alignItems: "center", backgroundColor: "#E0E0E0" }} />;
   }
 
   if (error) {
-    return <Text>{error.message}, ddsfs</Text>;
+    return <Text>{error.message}</Text>;
   }
 
   return (
@@ -89,12 +89,12 @@ export default function TabOneScreen() {
           <Text style={styles.newestTitle}>Previews Week</Text>
         </View>
         {
-          // data?.message.map(item => {
-          //   const dateparse = new Date(item.created_at)
-          //   return (
-          //     <CurrentWeek dateParse={dateparse} items={item} key={item.id} />
-          //   )
-          // })
+          data?.message.map(item => {
+            const dateparse = new Date(item.created_at)
+            return (
+              <CurrentWeek dateParse={dateparse} key={item.id} id={item.id} owner={item.owner} trayCount={item.tray_count} />
+            )
+          })
         }
 
       </ScrollView>

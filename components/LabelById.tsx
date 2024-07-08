@@ -3,7 +3,6 @@ import React from 'react'
 import { Tray } from '@/app/(tabs)'
 
 const LabelById = ({ labels, count }: { labels: Tray, count: number }) => {
-  console.log(labels.created_at)
   const dateparse = new Date(labels.created_at)
   return (
     <View style={styles().container}>
@@ -36,7 +35,7 @@ const styles = (done?: boolean) => StyleSheet.create({
     flex: 1,
     height: 140,
     margin: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "#ffffff",
     padding: 5,
     marginVertical: 16,
     borderRadius: 16,
