@@ -46,13 +46,10 @@ export const fetchOneById = async (id: any) => {
 };
 
 export const addNewTray = async (data: any) => {
-  const url = 'http://192.168.2.26:3000/label?id=87ddudk0nm';
+  const url = `http://${Env.API_ADDR}:${Env.PORT}/createlabeled`;
   const options = {
     method: 'POST',
-    headers: {
-      accept: 'application/json',
-      'content-type': 'application/json',
-    },
+    headers,
     body: JSON.stringify(data)
   };
 

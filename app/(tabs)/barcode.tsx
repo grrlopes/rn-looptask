@@ -1,50 +1,24 @@
-import { ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { Button } from '@rneui/base';
 import { BarcodeScanningResult, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Labeled } from '.';
-import { addNewTray, fetchOneById } from '@/api/label';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addNewTray } from '@/api/label';
+import { TrayLabel } from '.';
 
 const barcode = () => {
   const [facing, setFacing] = useState<CameraType>('back');
   const [scanned, setScanned] = useState<boolean>(true);
   const [permission, requestPermission] = useCameraPermissions();
 
-  const id = "87ddudk0nm";
   const client = useQueryClient();
 
-  const { data, isLoading, error } = useQuery<Labeled>({
-    queryKey: ['labelbarcode', id],
-    queryFn: () => fetchOneById(id),
-  });
-
-  const bla = {
-    id: Math.random().toString(),
-    trayId: Math.random().toString(),
-    size: "small",
-    user: "Tina Turner",
-    createdAt: new Date().toString(),
-    done: false
-  }
-  // data?.message.trays.push(bla)
-  // console.log(JSON.stringify(data))
-
   const { mutate } = useMutation({
-    mutationFn: () => addNewTray(data),
+    mutationFn: (scanValue: TrayLabel) => addNewTray(scanValue),
     onSuccess: () => {
       client.invalidateQueries();
     },
   });
-
-  if (isLoading) {
-    return <ActivityIndicator size={'large'} />;
-  }
-
-  if (error) {
-    return <Text>{error.message}</Text>;
-  }
-
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -65,10 +39,16 @@ const barcode = () => {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
-  const handleBarCodeScanned = (value: BarcodeScanningResult) => {
+  const handleBarCodeScanned = (valueScanned: BarcodeScanningResult) => {
     setScanned(true)
-    mutate()
-    alert(`Bar code with type and data ${JSON.stringify(data)} has been scanned!`);
+    const labeled: TrayLabel = {
+      "id": valueScanned.data,
+      "trayid": Math.floor(Math.random() * 90000909090900).toString(),
+      "size": "small",
+      "done": true,
+    }
+    mutate(labeled)
+    alert(`Bar code with type and data ${JSON.stringify(valueScanned.data)} has been scanned!`);
   };
 
   return (
@@ -80,7 +60,7 @@ const barcode = () => {
         onBarcodeScanned={(result) => scanned ? undefined : handleBarCodeScanned(result)}
       >
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+          <TouchableOpacity style={styles.button} onAccessibilityEscape={toggleCameraFacing}>
             <Button title={"Scan"} size='md' onPress={() => scanned ? setScanned(false) : setScanned(true)} />
           </TouchableOpacity>
         </View>

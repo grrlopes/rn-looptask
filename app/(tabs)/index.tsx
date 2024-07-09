@@ -34,8 +34,15 @@ export interface Tray {
   created_at: string
   updated_at: string
 }
+export interface TrayLabel {
+  id: string
+  trayid: string
+  size: string
+  done: boolean
+}
 
-interface User {
+
+export interface User {
   id: string
   name: string
   surname: string
