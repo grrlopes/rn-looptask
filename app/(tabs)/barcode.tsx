@@ -1,6 +1,6 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Modal, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
-import { Button } from '@rneui/base';
+import { Button as Buttons } from '@rneui/base';
 import { BarcodeScanningResult, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addNewTray } from '@/api/label';
@@ -8,8 +8,10 @@ import { TrayLabel } from '.';
 
 const barcode = () => {
   const [facing, setFacing] = useState<CameraType>('back');
-  const [scanned, setScanned] = useState<boolean>(true);
+  const [scanned, setScanned] = useState<boolean>(false);
   const [permission, requestPermission] = useCameraPermissions();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [scanValue, setScanValue] = useState<BarcodeScanningResult | undefined>();
 
   const client = useQueryClient();
 
@@ -48,7 +50,6 @@ const barcode = () => {
       "done": true,
     }
     mutate(labeled)
-    alert(`Bar code with type and data ${JSON.stringify(valueScanned.data)} has been scanned!`);
   };
 
   return (
@@ -57,13 +58,50 @@ const barcode = () => {
         style={styles.camera}
         facing={"back"}
         barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
-        onBarcodeScanned={(result) => scanned ? undefined : handleBarCodeScanned(result)}
+        onBarcodeScanned={(result) => {
+          if (scanned) {
+            setScanValue(result);
+            setModalVisible(true);
+          }
+        }}
       >
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onAccessibilityEscape={toggleCameraFacing}>
-            <Button title={"Scan"} size='md' onPress={() => scanned ? setScanned(false) : setScanned(true)} />
+            <Buttons title="Scan" size="md" onPress={() => setScanned(true)} />
           </TouchableOpacity>
         </View>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(false);
+            setScanned(false);
+          }}
+        >
+          <View style={styles.modalBackground}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Are you sure you want to create new label ?</Text>
+              <Button
+                title="NO"
+                onPress={() => (setModalVisible(false), setScanned(false))}
+              />
+              <Button
+                title={"YES"}
+                onPress={() => {
+                  if (scanValue) {
+                    handleBarCodeScanned(scanValue);
+                  }
+                  setScanned(false)
+                  setModalVisible(false)
+                }}
+              />
+            </View>
+          </View>
+        </Modal>
+
+
       </CameraView>
     </View>
   );
@@ -92,6 +130,33 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
+  },
+
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    gap: 4,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });
 
