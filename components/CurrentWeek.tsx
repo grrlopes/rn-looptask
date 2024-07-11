@@ -1,10 +1,11 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Link } from 'expo-router'
+import { User } from '@/app/(tabs)';
 
 interface Props {
   dateParse: Date;
   id: string;
-  owner: string;
+  owner: User;
   trayCount: number
 }
 
@@ -21,8 +22,8 @@ const CurrentWeek = (props: Props) => {
             </View>
             <View>
               <Text style={{ fontWeight: "500", color: "#000000" }}>{props.dateParse.getFullYear()}</Text>
-              <Text style={{ fontWeight: "400" }}>{props.owner}</Text>
-              <Text>{props.owner}</Text>
+              <Text style={{ fontWeight: "400" }}>{props.id}</Text>
+              <Text>{props.owner.name} {props.owner.surname}  </Text>
             </View>
             <View style={styles.newestContentQty}>
               <View style={styles.qtyTxt}>

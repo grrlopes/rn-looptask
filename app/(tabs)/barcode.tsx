@@ -13,7 +13,7 @@ const barcode = () => {
   const [permission, requestPermission] = useCameraPermissions();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [scanValue, setScanValue] = useState<BarcodeScanningResult | undefined>();
-  const [selectedIndex, setIndex] = useState(0);
+  const [selectedIndex, setIndex] = useState<number>(0);
 
   const client = useQueryClient();
 
