@@ -1,5 +1,6 @@
 import { fetchAll } from '@/api/label';
 import CurrentWeek from '@/components/CurrentWeek';
+import { splitMessagesByWeek } from '@/helper/MessageByWeek';
 import { useQuery } from '@tanstack/react-query';
 import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -10,12 +11,12 @@ export interface LabeledStack {
   success: boolean
 }
 
-interface message {
+export interface message {
   id: string
   trays: Tray[]
   created_at: string
   updated_at: string
-  owner: string
+  owner: User
   tray_count: number
 }
 
@@ -63,6 +64,8 @@ export default function TabOneScreen() {
     return <Text>{error.message}</Text>;
   }
 
+  const {previousWeek, currentWeek} = splitMessagesByWeek(data?.message)
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
@@ -85,7 +88,7 @@ export default function TabOneScreen() {
           <Text style={styles.newestLabel}>Total</Text>
         </View>
         {
-          data?.message.map(item => {
+          currentWeek.map(item => {
             const dateparse = new Date(item.created_at)
             return (
               <CurrentWeek dateParse={dateparse} key={item.id} id={item.id} owner={item.owner} trayCount={item.tray_count} />
@@ -96,7 +99,7 @@ export default function TabOneScreen() {
           <Text style={styles.newestTitle}>Previews Week</Text>
         </View>
         {
-          data?.message.map(item => {
+          previousWeek.map(item => {
             const dateparse = new Date(item.created_at)
             return (
               <CurrentWeek dateParse={dateparse} key={item.id} id={item.id} owner={item.owner} trayCount={item.tray_count} />
