@@ -1,17 +1,19 @@
 import { Modal, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
-import { Button as Buttons } from '@rneui/base';
 import { BarcodeScanningResult, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addNewTray } from '@/api/label';
 import { TrayLabel } from '.';
+import { Button as Buttons, CheckBox } from '@rneui/themed';
+import { FontAwesome } from '@expo/vector-icons';
 
 const barcode = () => {
   const [facing, setFacing] = useState<CameraType>('back');
   const [scanned, setScanned] = useState<boolean>(false);
   const [permission, requestPermission] = useCameraPermissions();
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [scanValue, setScanValue] = useState<BarcodeScanningResult | undefined>();
+  const [selectedIndex, setIndex] = useState(0);
 
   const client = useQueryClient();
 
@@ -43,10 +45,11 @@ const barcode = () => {
 
   const handleBarCodeScanned = (valueScanned: BarcodeScanningResult) => {
     setScanned(true)
+    const size = selectedIndex === 0 ? 'small' : 'large';
     const labeled: TrayLabel = {
       "id": valueScanned.data,
       "trayid": Math.floor(Math.random() * 90000909090900).toString(),
-      "size": "small",
+      "size": size,
       "done": true,
     }
     mutate(labeled)
@@ -66,9 +69,29 @@ const barcode = () => {
         }}
       >
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onAccessibilityEscape={toggleCameraFacing}>
-            <Buttons title="Scan" size="md" onPress={() => setScanned(true)} />
-          </TouchableOpacity>
+          <View>
+            <CheckBox
+              title={"Small"}
+              checked={selectedIndex === 0}
+              onPress={() => setIndex(0)}
+              checkedIcon="dot-circle-o"
+              uncheckedIcon="circle-o"
+            />
+          </View>
+          <View style={{ width: 150 }}>
+            <TouchableOpacity onAccessibilityEscape={toggleCameraFacing}>
+              <Buttons title="Scan" size={"lg"} onPress={() => setScanned(true)} />
+            </TouchableOpacity>
+          </View>
+          <View>
+            <CheckBox
+              title={"Large"}
+              checked={selectedIndex === 1}
+              onPress={() => setIndex(1)}
+              checkedIcon="dot-circle-o"
+              uncheckedIcon="circle-o"
+            />
+          </View>
         </View>
 
         <Modal
@@ -82,28 +105,36 @@ const barcode = () => {
         >
           <View style={styles.modalBackground}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>Are you sure you want to create new label ?</Text>
-              <Button
-                title="NO"
-                onPress={() => (setModalVisible(false), setScanned(false))}
-              />
-              <Button
-                title={"YES"}
-                onPress={() => {
-                  if (scanValue) {
-                    handleBarCodeScanned(scanValue);
-                  }
-                  setScanned(false)
-                  setModalVisible(false)
-                }}
-              />
+              <View style={styles.modalWarn}>
+                <FontAwesome name='warning' size={20} />
+                <Text style={styles.modalText}>Are you sure you want to create new label ?</Text>
+              </View>
+              <View style={styles.modalButton}>
+                <View style={styles.buttons}>
+                  <Button
+                    title='NO'
+                    onPress={() => (setModalVisible(false), setScanned(false))}
+                  />
+                </View>
+                <View style={styles.buttons}>
+                  <Button
+                    title='YES'
+                    onPress={() => {
+                      if (scanValue) {
+                        handleBarCodeScanned(scanValue);
+                      }
+                      setScanned(false)
+                      setModalVisible(false)
+                    }}
+                  />
+                </View>
+              </View>
             </View>
           </View>
         </Modal>
 
-
-      </CameraView>
-    </View>
+      </CameraView >
+    </View >
   );
 }
 
@@ -114,24 +145,15 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
+    flexDirection: "row",
+    alignItems: "flex-end",
   },
   buttonContainer: {
     flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 60,
   },
-  button: {
-    flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-
   modalBackground: {
     flex: 1,
     justifyContent: 'center',
@@ -145,7 +167,7 @@ const styles = StyleSheet.create({
     gap: 4,
     padding: 35,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: '#000000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -153,6 +175,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  modalWarn: {
+    alignItems: 'center',
+  },
+  modalButton: {
+    flexDirection: 'row',
+    gap: 50,
+  },
+  buttons: {
+    width: 90,
   },
   modalText: {
     marginBottom: 15,

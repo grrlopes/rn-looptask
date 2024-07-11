@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
 import Colors from '@/constants/Colors';
+import { CheckBox } from '@rneui/base';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -14,6 +15,9 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
+  const [isSmallChecked, setSmallChecked] = useState(false);
+  const [isLargeChecked, setLargeChecked] = useState(false);
+  const [selectedIndex, setIndex] = useState(0);
   return (
     <Tabs
       screenOptions={{
