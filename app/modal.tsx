@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Platform, SafeAreaView, SafeAreaViewComponent, StyleSheet, Text, View, ViewBase } from 'react-native';
+import { Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 
