@@ -7,7 +7,7 @@ interface WeekSplit {
   previousWeek: message[];
 }
 
-export function splitMessagesByWeek(messages: message[] | undefined): WeekSplit {
+export const splitMessagesByWeek = (messages: message[] | undefined): WeekSplit => {
   const currentDate = new Date();
   const startOfCurrentWeek = startOfWeek(currentDate, { weekStartsOn: 0 });
   const endOfCurrentWeek = endOfWeek(currentDate, { weekStartsOn: 0 });

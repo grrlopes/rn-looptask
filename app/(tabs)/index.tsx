@@ -2,7 +2,8 @@ import { fetchAll } from '@/api/label';
 import CurrentWeek from '@/components/CurrentWeek';
 import { splitMessagesByWeek } from '@/helper/MessageByWeek';
 import { useQuery } from '@tanstack/react-query';
-import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { ActivityIndicator, RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 
 export interface LabeledStack {
@@ -51,10 +52,22 @@ export interface User {
 }
 
 export default function TabOneScreen() {
-  const { data, isLoading, error } = useQuery<LabeledStack>({
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const { data, isLoading, error, refetch } = useQuery<LabeledStack>({
     queryKey: ['labels'],
     queryFn: fetchAll,
   });
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await refetch();
+    } catch (error) {
+      console.error('Error refreshing data:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   if (isLoading) {
     return <ActivityIndicator size={"large"} color={"#000000"} style={{ flex: 1, alignItems: "center", backgroundColor: "#E0E0E0" }} />;
@@ -64,11 +77,16 @@ export default function TabOneScreen() {
     return <Text>{error.message}</Text>;
   }
 
-  const {previousWeek, currentWeek} = splitMessagesByWeek(data?.message)
+  const { previousWeek, currentWeek } = splitMessagesByWeek(data?.message)
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false} refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }>
         <View style={styles.newestContainer}>
           <Text style={styles.newestTitle}>Current week</Text>
           <Text style={styles.newestToday}>Today</Text>
