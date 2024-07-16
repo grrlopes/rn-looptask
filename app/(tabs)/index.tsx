@@ -18,7 +18,13 @@ export interface message {
   created_at: string
   updated_at: string
   owner: User
+  estimate: {
+    small: number,
+    large: number
+  }
   tray_count: number
+  small_count: number
+  large_count: number
 }
 
 export interface Labeled {
@@ -77,7 +83,7 @@ export default function TabOneScreen() {
     return <Text>{error.message}</Text>;
   }
 
-  const { previousWeek, currentWeek } = splitMessagesByWeek(data?.message)
+  const { previousWeek, currentWeek, currentDay } = splitMessagesByWeek(data?.message)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -93,11 +99,25 @@ export default function TabOneScreen() {
         </View>
         <View style={styles.today}>
           <Text style={styles.todayTitle}>Small</Text>
-          <View style={styles.todayNr}>
-            <Text>160</Text>
+          <View style={styles.todayNrPlus}>
+            {
+              currentDay.estimate.small >= currentDay.small_count
+                ? <Text style={{ color: "green" }}>+{currentDay.estimate.small - currentDay.small_count}</Text>
+                : <Text style={{ color: "red" }}>-{currentDay.estimate.small - currentDay.small_count}</Text>
+            }
           </View>
           <View style={styles.todayNr}>
-            <Text>70</Text>
+            <Text>{currentDay.estimate.small}</Text>
+          </View>
+          <View style={styles.todayNr}>
+            <Text>{currentDay.estimate.large}</Text>
+          </View>
+          <View style={styles.todayNrMinus}>
+            {
+              currentDay.estimate.large >= currentDay.large_count
+                ? <Text style={{ color: "green" }}>+{currentDay.estimate.large - currentDay.large_count}</Text>
+                : <Text style={{ color: "red" }}>-{currentDay.estimate.large - currentDay.large_count}</Text>
+            }
           </View>
           <Text style={styles.todayTitle}>Large</Text>
         </View>
@@ -176,7 +196,14 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     height: 30,
     width: 30,
-
+  },
+  todayNrPlus: {
+    position: "absolute",
+    marginLeft: 47,
+  },
+  todayNrMinus: {
+    position: "absolute",
+    marginLeft: 190,
   },
   todayTitle: {
     fontSize: 11,
