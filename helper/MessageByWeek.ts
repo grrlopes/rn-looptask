@@ -17,7 +17,6 @@ export const splitMessagesByWeek = (messages: message[] | undefined): WeekSplit 
 
   const currentWeek: message[] = [];
   const previousWeek: message[] = [];
-  // let currentDay: message = Object()
   let currentDay: message = {
     id: '',
     trays: [],
@@ -40,7 +39,7 @@ export const splitMessagesByWeek = (messages: message[] | undefined): WeekSplit 
 
     if (messageDate.toLocaleDateString() == currentDate.toLocaleDateString()) {
       currentDay = message
-    }else {
+    } else {
       currentDay
     }
   });

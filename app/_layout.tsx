@@ -50,7 +50,8 @@ function RootLayoutNav() {
     <QueryClientProvider client={queryClient}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{
+        <Stack.Screen name="modals/stacktray" options={{
+          title: "",
           presentation: 'modal',
           headerStyle: { backgroundColor: "#1FE68F" },
         }}
