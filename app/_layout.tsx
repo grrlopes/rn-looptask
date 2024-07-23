@@ -53,7 +53,7 @@ function RootLayoutNav() {
         <Stack.Screen name="modals/stacktray" options={{
           title: "",
           presentation: 'modal',
-          headerStyle: { backgroundColor: "#1FE68F" },
+          headerStyle: { backgroundColor: "#757575" },
         }}
         />
         <Stack.Screen name="modals/labeled" options={{

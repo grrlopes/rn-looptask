@@ -1,14 +1,45 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Button, Text } from 'react-native';
 import { Input } from '@rneui/themed';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addNewStackTray } from '@/api/label';
+
+export interface estimate {
+  small: number,
+  large: number,
+}
 
 const StackTray = () => {
   const [small, setSmall] = useState<string>("");
   const [large, setLarge] = useState<string>("");
+  const [successMessage, setSuccessMessage] = useState<string>("");
+
+  const client = useQueryClient();
+
+  const { mutate, reset, isSuccess, error } = useMutation({
+    mutationFn: (quantity: estimate) => addNewStackTray(quantity),
+    onSuccess: () => {
+      client.invalidateQueries();
+      setSuccessMessage("The input was recorded.");
+      setTimeout(() => setSuccessMessage(""), 4000);
+    },
+  });
 
   const handleStackTray = () => {
-
+    const quantity: estimate = {
+      small: parseInt(small),
+      large: parseInt(large),
+    }
+    mutate(quantity)
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      reset();
+      setSmall("");
+      setLarge("");
+    }
+  }, [isSuccess, reset]);
 
   return (
     <View style={styles.container}>
@@ -33,6 +64,8 @@ const StackTray = () => {
         containerStyle={styles.inputContainer}
       />
       <Button color={"grey"} title="Create" onPress={handleStackTray} />
+      {successMessage ? <Text style={styles.successMessage}>{successMessage}</Text> : null}
+      {error ? <Text style={styles.errorMessage}>{error.message}</Text> : null}
     </View>
   );
 };
@@ -57,6 +90,18 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     color: "grey",
     marginBottom: 20,
+  },
+  successMessage: {
+    color: "green",
+    fontWeight: "500",
+    marginTop: 20,
+    textAlign: "center",
+  },
+  errorMessage: {
+    color: "red",
+    fontWeight: "500",
+    marginTop: 20,
+    textAlign: "center",
   }
 });
 
