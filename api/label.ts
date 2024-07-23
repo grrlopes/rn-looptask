@@ -72,7 +72,6 @@ export const addNewStackTray = async (data: any) => {
   };
 
   const res = await fetch(url, options);
-  console.log(res.ok)
 
   if (!res.ok) {
     throw new Error('Failed to create stack tray');

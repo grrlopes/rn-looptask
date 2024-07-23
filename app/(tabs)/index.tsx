@@ -101,9 +101,9 @@ export default function TabOneScreen() {
           <Text style={styles.todayTitle}>Small</Text>
           <View style={styles.todayNrPlus}>
             {
-              currentDay.estimate.small >= currentDay.small_count
-                ? <Text style={{ color: "green" }}>+{currentDay.estimate.small - currentDay.small_count}</Text>
-                : <Text style={{ color: "red" }}>-{currentDay.estimate.small - currentDay.small_count}</Text>
+              ((currentDay.estimate.small - currentDay.small_count) < 0)
+                ? <Text style={{ color: "red" }}>{currentDay.estimate.small - currentDay.small_count}</Text>
+                : <Text style={{ color: "green" }}>+{currentDay.estimate.small - currentDay.small_count}</Text>
             }
           </View>
           <View style={styles.todayNr}>
@@ -114,9 +114,9 @@ export default function TabOneScreen() {
           </View>
           <View style={styles.todayNrMinus}>
             {
-              currentDay.estimate.large >= currentDay.large_count
-                ? <Text style={{ color: "green" }}>+{currentDay.estimate.large - currentDay.large_count}</Text>
-                : <Text style={{ color: "red" }}>-{currentDay.estimate.large - currentDay.large_count}</Text>
+              ((currentDay.estimate.large - currentDay.large_count) < 0)
+                ? <Text style={{ color: "red" }}>{currentDay.estimate.large - currentDay.large_count}</Text>
+                : <Text style={{ color: "green" }}>+{currentDay.estimate.large - currentDay.large_count}</Text>
             }
           </View>
           <Text style={styles.todayTitle}>Large</Text>
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   },
   todayNrMinus: {
     position: "absolute",
-    marginLeft: 190,
+    marginLeft: 193,
   },
   todayTitle: {
     fontSize: 11,
