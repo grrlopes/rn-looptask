@@ -1,5 +1,6 @@
 import { fetchAll } from '@/api/label';
 import CurrentWeek from '@/components/CurrentWeek';
+import EstimativeQty from '@/components/EstimativeQty';
 import { splitMessagesByWeek } from '@/helper/MessageByWeek';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -100,11 +101,7 @@ export default function TabOneScreen() {
         <View style={styles.today}>
           <Text style={styles.todayTitle}>Small</Text>
           <View style={styles.todayNrPlus}>
-            {
-              ((currentDay.estimate.small - currentDay.small_count) < 0)
-                ? <Text style={{ color: "red" }}>{currentDay.estimate.small - currentDay.small_count}</Text>
-                : <Text style={{ color: "green" }}>+{currentDay.estimate.small - currentDay.small_count}</Text>
-            }
+            <EstimativeQty currentDay={currentDay} />
           </View>
           <View style={styles.todayNr}>
             <Text>{currentDay.estimate.small}</Text>
@@ -113,11 +110,7 @@ export default function TabOneScreen() {
             <Text>{currentDay.estimate.large}</Text>
           </View>
           <View style={styles.todayNrMinus}>
-            {
-              ((currentDay.estimate.large - currentDay.large_count) < 0)
-                ? <Text style={{ color: "red" }}>{currentDay.estimate.large - currentDay.large_count}</Text>
-                : <Text style={{ color: "green" }}>+{currentDay.estimate.large - currentDay.large_count}</Text>
-            }
+            <EstimativeQty currentDay={currentDay} />
           </View>
           <Text style={styles.todayTitle}>Large</Text>
         </View>
