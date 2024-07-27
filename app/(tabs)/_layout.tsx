@@ -50,14 +50,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="barcode"
-        options={{
-          title: '',
-          headerShown: true,
-          tabBarIcon: ({ color }) => <TabBarIcon name="camera-retro" color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="two"
         options={{
           title: '',

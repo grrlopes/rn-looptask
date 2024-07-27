@@ -67,7 +67,7 @@ function RootLayoutNav() {
           presentation: 'modal',
           headerStyle: { backgroundColor: "#757575" },
         }}
-/>
+        />
       </Stack>
     </QueryClientProvider>
   );
