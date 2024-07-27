@@ -1,8 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { FC } from 'react'
 import { Tray } from '@/app/(tabs)'
 
-const LabelById = ({ labels, count }: { labels: Tray, count: number }) => {
+interface Counting {
+  labels: Tray,
+  count: number,
+}
+
+const LabelById: FC<Counting> = ({ labels, count }) => {
   const dateparse = new Date(labels.created_at)
   return (
     <View style={styles().container}>

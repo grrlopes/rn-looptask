@@ -45,7 +45,7 @@ export interface Tray {
 }
 
 export interface TrayLabel {
-  id: string
+  id?: string
   trayid: string
   size: string
   done: boolean

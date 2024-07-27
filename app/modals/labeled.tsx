@@ -21,7 +21,20 @@ export default function labeled() {
 
   if (error) {
     return (
-      <ErrorPage message={error.message} />
+      <>
+        <ErrorPage message={error.message} />
+        <View style={styles.footBar}>
+          <Link href={{ pathname: "/modals/barcode", params: { id: id, } }} asChild>
+            <TouchableOpacity>
+              <FontAwesome
+                name="camera-retro"
+                size={28}
+                color={Colors['light'].text}
+              />
+            </TouchableOpacity>
+          </Link>
+        </View>
+      </>
     )
   }
 
@@ -35,7 +48,7 @@ export default function labeled() {
         keyExtractor={item => item.id}
       />
       <View style={styles.footBar}>
-        <Link href="../modals/barcode" asChild>
+        <Link href={{ pathname: "/modals/barcode", params: { id: id, } }} asChild>
           <TouchableOpacity>
             <FontAwesome
               name="camera-retro"

@@ -6,6 +6,7 @@ import { addNewTray } from '@/api/label';
 import { Button as Buttons, CheckBox } from '@rneui/themed';
 import { FontAwesome } from '@expo/vector-icons';
 import { TrayLabel } from '../(tabs)';
+import { useGlobalSearchParams } from 'expo-router';
 
 const barcode = () => {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -14,6 +15,7 @@ const barcode = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [scanValue, setScanValue] = useState<BarcodeScanningResult | undefined>();
   const [selectedIndex, setIndex] = useState<number>(0);
+  const { id } = useGlobalSearchParams<{ id: string }>();
 
   const client = useQueryClient();
 
@@ -47,7 +49,8 @@ const barcode = () => {
     setScanned(true)
     const size = selectedIndex === 0 ? 'small' : 'large';
     const labeled: TrayLabel = {
-      "id": valueScanned.data,
+      // "id": valueScanned.data,
+      id: id,
       "trayid": Math.floor(Math.random() * 90000909090900).toString(),
       "size": size,
       "done": true,
