@@ -1,10 +1,12 @@
-import { ActivityIndicator, FlatList, Text, View } from 'react-native'
-import { useGlobalSearchParams } from 'expo-router';
+import { ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Link, useGlobalSearchParams } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { Labeled } from '../(tabs)';
 import { fetchOneById } from '@/api/label';
 import LabelById from '@/components/LabelById';
 import ErrorPage from '@/components/ErrorPage';
+import { FontAwesome } from '@expo/vector-icons';
+import Colors from '@/constants/Colors';
 
 export default function labeled() {
   const { id } = useGlobalSearchParams<{ id: string }>();
@@ -32,6 +34,34 @@ export default function labeled() {
         renderItem={({ item, index }) => <LabelById labels={item} count={index} />}
         keyExtractor={item => item.id}
       />
+      <View style={styles.footBar}>
+        <Link href="../modals/barcode" asChild>
+          <TouchableOpacity>
+            <FontAwesome
+              name="camera-retro"
+              size={28}
+              color={Colors['light'].text}
+            />
+          </TouchableOpacity>
+        </Link>
+      </View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  footBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: 48,
+    backgroundColor: '#E0E0E0',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+    borderTopWidth: 0.1,
+    borderTopColor: '#ccc',
+  }
+})

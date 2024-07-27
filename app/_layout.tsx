@@ -62,6 +62,12 @@ function RootLayoutNav() {
           headerStyle: { backgroundColor: "#757575" },
         }}
         />
+        <Stack.Screen name="modals/barcode" options={{
+          title: "",
+          presentation: 'modal',
+          headerStyle: { backgroundColor: "#757575" },
+        }}
+/>
       </Stack>
     </QueryClientProvider>
   );
