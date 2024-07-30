@@ -59,7 +59,7 @@ function RootLayoutNav() {
         <Stack.Screen name="modals/labeled" options={{
           title: "",
           presentation: 'modal',
-          headerStyle: { backgroundColor: "#757575" },
+          headerShown: false,
         }}
         />
         <Stack.Screen name="modals/barcode" options={{

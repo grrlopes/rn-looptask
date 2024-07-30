@@ -1,4 +1,4 @@
-import { ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Link, useGlobalSearchParams } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { Labeled } from '../(tabs)';
@@ -7,9 +7,12 @@ import LabelById from '@/components/LabelById';
 import ErrorPage from '@/components/ErrorPage';
 import { FontAwesome } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
+import useStoreLabel from '@/store/labeled';
+import { useEffect } from 'react';
 
 export default function labeled() {
   const { id } = useGlobalSearchParams<{ id: string }>();
+  const getItemById = useStoreLabel((state) => state.getItemById(id !== undefined ? id : ""))
   const { data, isLoading, error } = useQuery<Labeled>({
     queryKey: ['labels', id],
     queryFn: () => fetchOneById(id),
@@ -40,6 +43,20 @@ export default function labeled() {
 
   return (
     <View style={{ flex: 1 }}>
+      <View style={styles.TopBar}>
+        <View style={styles.title}>
+          <Text style={styles.titleSize}>Small</Text>
+          <View style={styles.Quantity}>
+            <Text>{getItemById?.small}</Text>
+          </View>
+        </View>
+        <View style={styles.title}>
+          <Text style={styles.titleSize}>Large</Text>
+          <View style={styles.Quantity}>
+            <Text>{getItemById?.large}</Text>
+          </View>
+        </View>
+      </View>
       <FlatList
         showsVerticalScrollIndicator={false}
         data={data?.message.trays}
@@ -76,5 +93,35 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderTopWidth: 0.1,
     borderTopColor: '#ccc',
+  },
+  TopBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-end',
+    height: 70,
+    backgroundColor: '#757575',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+    borderTopWidth: 0.1,
+    borderTopColor: '#ccc',
+    paddingBottom: 4,
+  },
+  Quantity: {
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 100,
+    height: 30,
+    width: 30,
+  },
+  title: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  titleSize: {
+    fontSize: 11,
   }
 })

@@ -2,6 +2,7 @@ import { fetchAll } from '@/api/label';
 import CurrentWeek from '@/components/CurrentWeek';
 import EstimativeQty from '@/components/EstimativeQty';
 import { splitMessagesByWeek } from '@/helper/MessageByWeek';
+import useStoreLabel from '@/store/labeled';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { ActivityIndicator, RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -59,12 +60,12 @@ export interface User {
 }
 
 export default function TabOneScreen() {
+  const addItem = useStoreLabel((state) => state.addItem);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const { data, isLoading, error, refetch } = useQuery<LabeledStack>({
     queryKey: ['labels'],
     queryFn: fetchAll,
   });
-
   const onRefresh = async () => {
     setRefreshing(true);
     try {
@@ -120,6 +121,7 @@ export default function TabOneScreen() {
         </View>
         {
           currentWeek.map(item => {
+            addItem({ id: item.id, small: item.small_count, large: item.large_count })
             const dateparse = new Date(item.created_at)
             return (
               <CurrentWeek dateParse={dateparse} key={item.id} id={item.id} owner={item.owner} trayCount={item.tray_count} />
@@ -131,6 +133,7 @@ export default function TabOneScreen() {
         </View>
         {
           previousWeek.map(item => {
+            addItem({ id: item.id, small: item.small_count, large: item.large_count })
             const dateparse = new Date(item.created_at)
             return (
               <CurrentWeek dateParse={dateparse} key={item.id} id={item.id} owner={item.owner} trayCount={item.tray_count} />
