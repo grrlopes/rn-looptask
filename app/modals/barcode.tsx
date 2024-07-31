@@ -7,6 +7,7 @@ import { Button as Buttons, CheckBox } from '@rneui/themed';
 import { FontAwesome } from '@expo/vector-icons';
 import { TrayLabel } from '../(tabs)';
 import { useGlobalSearchParams } from 'expo-router';
+import useStoreLabel from '@/store/labeled';
 
 const barcode = () => {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -16,6 +17,8 @@ const barcode = () => {
   const [scanValue, setScanValue] = useState<BarcodeScanningResult | undefined>();
   const [selectedIndex, setIndex] = useState<number>(0);
   const { id } = useGlobalSearchParams<{ id: string }>();
+  const getItemById = useStoreLabel((state) => state.getItemById(id ?? ''))
+  const updateItem = useStoreLabel((state) => state.updateItem)
 
   const client = useQueryClient();
 
@@ -23,6 +26,13 @@ const barcode = () => {
     mutationFn: (scanValue: TrayLabel) => addNewTray(scanValue),
     onSuccess: () => {
       client.invalidateQueries();
+      if (getItemById) {
+        if (selectedIndex === 0) {
+          updateItem(getItemById.id, getItemById.small + 1, getItemById.large)
+        } else {
+          updateItem(getItemById.id, getItemById.small, getItemById.large + 1)
+        }
+      }
     },
   });
 
