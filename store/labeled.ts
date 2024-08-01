@@ -1,33 +1,3 @@
-
-// interface SmallLargeState {
-//   itemSmall: number | undefined;
-//   itemLarge: number | undefined;
-//   setSmallAndLarge: (small: number | undefined, large: number | undefined) => void;
-// }
-
-// export const useLabeledStore = create<SmallLargeState>((set) => ({
-//   itemSmall: undefined,
-//   itemLarge: undefined,
-//   setSmallAndLarge: (small, large) => set({ itemSmall: small, itemLarge: large }),
-// }));
-
-// type Store = {
-//   smallCount: number,
-//   largeCount: number,
-//   setSmallAndLarge: (small: number | undefined, large: number | undefined) => void;
-// }
-
-// const useStore = create<Store>((set) => ({
-//   smallCount: 0,
-//   largeCount: 0,
-//   setSmallAndLarge(small: number | undefined, large: number | undefined) {
-//     set((state) => ({
-//       ...state,
-//       smallCount: small,
-//       largeCount: large,
-//     }));
-//   },
-// }))
 import { create } from 'zustand';
 
 // Define types for state values and actions separately

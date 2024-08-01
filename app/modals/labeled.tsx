@@ -1,5 +1,5 @@
 import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { Link, useGlobalSearchParams } from 'expo-router';
+import { Link, router, useGlobalSearchParams } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { Labeled } from '../(tabs)';
 import { fetchOneById } from '@/api/label';
@@ -8,7 +8,6 @@ import ErrorPage from '@/components/ErrorPage';
 import { FontAwesome } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 import useStoreLabel from '@/store/labeled';
-import { useEffect } from 'react';
 
 export default function labeled() {
   const { id } = useGlobalSearchParams<{ id: string }>();
@@ -56,6 +55,9 @@ export default function labeled() {
             <Text>{getItemById?.large}</Text>
           </View>
         </View>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Text >Go Back</Text>
+        </TouchableOpacity>
       </View>
       <FlatList
         showsVerticalScrollIndicator={false}
