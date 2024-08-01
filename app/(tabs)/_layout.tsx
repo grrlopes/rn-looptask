@@ -50,11 +50,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="calendarSearch"
         options={{
           title: '',
-          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="calendar-check-o" color={color} />,
+          headerShown: false,
         }}
       />
     </Tabs>
