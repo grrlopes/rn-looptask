@@ -1,18 +1,42 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { TextInput as TxtInput } from 'react-native-paper';
 import TextInput from '@/components/input/TextInput';
 import Button from '@/components/button/Button';
 import { emailValidator } from '@/helper/emailValidator';
 import { passwordValidator } from '@/helper/passwordValidator';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { doLogin } from '@/api/label';
 
 type InputState = {
   value: string;
   error: string;
 };
 
+type Authentication = {
+  name: string;
+  surname: string;
+  email: string;
+  password: string;
+}
+
 const Login: React.FC = () => {
   const [email, setEmail] = useState<InputState>({ value: '', error: '' });
   const [password, setPassword] = useState<InputState>({ value: '', error: '' });
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const client = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: (auth: Authentication) => doLogin(auth),
+    onSuccess: () => {
+      client.invalidateQueries();
+    }
+  });
 
   const onLoginPressed = () => {
     const emailError = emailValidator(email.value);
@@ -23,6 +47,13 @@ const Login: React.FC = () => {
       setPassword({ ...password, error: passwordError });
       return;
     }
+    const auth: Authentication = {
+      email: email.value,
+      password: password.value,
+      name: 'baleia',
+      surname: 'whale'
+    }
+    mutate(auth);
   };
 
   return (
@@ -48,7 +79,13 @@ const Login: React.FC = () => {
           onChangeText={(text) => setPassword({ value: text, error: '' })}
           error={!!password.error}
           errorText={password.error}
-          secureTextEntry
+          secureTextEntry={!passwordVisible}
+          right={
+            <TxtInput.Icon
+              icon={passwordVisible ? 'eye-off' : 'eye'}
+              onPress={togglePasswordVisibility}
+            />
+          }
           style={styles.input}
         />
         <Button mode="contained" onPress={onLoginPressed} style={{ backgroundColor: "grey" }}>
