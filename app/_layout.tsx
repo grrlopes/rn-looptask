@@ -3,8 +3,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Login from './auth/login';
+import { LogIn } from '@/api/label';
+import { getUserToken, removeUserToken } from '@/store/persistor';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -41,17 +43,21 @@ export default function RootLayout() {
     return null;
   }
 
-
   return <RootLayoutNav />;
 }
 
-function RootLayoutNav() {
+const RootLayoutNav = () => {
+  const [auth, setAuth] = useState<LogIn>()
   const queryClient = new QueryClient()
-  const auth = false;
-  if (!auth) {
+
+  const doAuth = (log: LogIn): void => {
+    setAuth(log)
+  }
+
+  if (!auth?.success) {
     return (
       <QueryClientProvider client={queryClient}>
-        <Login />
+        <Login logIn={doAuth} />
       </QueryClientProvider>
     )
   }

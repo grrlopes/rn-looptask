@@ -1,20 +1,46 @@
+import { getUserToken } from "@/store/persistor";
+
 const Env = {
   API_ADDR: "192.168.2.26",
   PORT: 8080,
-  Token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2N2QwNTdkYjk1OTY1MzU1ZDIzNGM0ZSIsIm5hbWUiOiJiYWxlaWEiLCJzdXJuYW1lIjoid2hhbGUiLCJlbWFpbCI6ImJhbGVpYUBiYWxlaXJhLmNvbSIsInBhc3N3b3JkIjoiKioqIiwiY3JlYXRlZF9hdCI6IjIwMjQtMDYtMjdUMDY6MjM6NTYuNDc2WiIsInVwZGF0ZWRfYXQiOiIyMDI0LTA2LTI3VDA2OjIzOjU2LjQ3NloiLCJleHAiOjE3MjE3OTI4NzAsImlhdCI6MTcyMTYyMDA3MH0.ViLAVPZ9mgyYwb2IMGu5kvj_zjE_jnz9zntAJgzpbBs"
+  Token: null as string | null,
 };
 
-const headers = {
-  accept: 'application/json',
-  'Content-Type': 'application/json',
-  Authorization: 'Bearer ' + Env.Token,
+export const initializeEnv = async () => {
+  Env.Token = await getUserToken();
 };
+
+const headers = async () => {
+  if (!Env.Token) {
+    await initializeEnv();
+  }
+
+  return {
+    accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + Env.Token,
+  };
+};
+
+export type LogIn = {
+  error: null | string;
+  message: {
+    created_at: string;
+    email: string;
+    id: string;
+    name: string;
+    surname: string;
+    token: string;
+    updated_at: string;
+  };
+  success: boolean;
+}
 
 export const fetchAll = async () => {
   const url = `http://${Env.API_ADDR}:${Env.PORT}/listalltraystack`;
   const options = {
     method: 'GET',
-    headers,
+    headers: await headers(),
   };
 
   const res = await fetch(url, options);
@@ -31,7 +57,7 @@ export const fetchOneById = async (id: any) => {
   const url = `http://${Env.API_ADDR}:${Env.PORT}/fetchonelabel?id=${id}`;
   const options = {
     method: 'GET',
-    headers,
+    headers: await headers(),
   };
 
   const res = await fetch(url, options);
@@ -49,7 +75,7 @@ export const addNewTray = async (data: any) => {
   const url = `http://${Env.API_ADDR}:${Env.PORT}/createlabeled`;
   const options = {
     method: 'POST',
-    headers,
+    headers: await headers(),
     body: JSON.stringify(data)
   };
 
@@ -67,17 +93,37 @@ export const addNewStackTray = async (data: any) => {
   const url = `http://${Env.API_ADDR}:${Env.PORT}/createlabelstack`;
   const options = {
     method: 'POST',
-    headers,
+    headers: await headers(),
     body: JSON.stringify(data)
   };
 
   const res = await fetch(url, options);
 
-  if (!res.ok) {
-    throw new Error('Failed to create stack tray');
-  }
-
   const json = await res.json();
+
+  if (!json.success) {
+    throw new Error(json.error);
+  }
 
   return json;
 };
+
+export const doLogin = async (auth: any): Promise<LogIn> => {
+  const url = `http://${Env.API_ADDR}:${Env.PORT}/login`;
+  const options = {
+    method: 'POST',
+    headers: await headers(),
+    body: JSON.stringify(auth)
+  };
+
+  const res = await fetch(url, options);
+
+  const json = await res.json();
+
+  if (!json.success) {
+    throw new Error(json.error);
+  }
+
+  return json as LogIn;
+
+}

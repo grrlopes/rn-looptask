@@ -6,7 +6,8 @@ import Button from '@/components/button/Button';
 import { emailValidator } from '@/helper/emailValidator';
 import { passwordValidator } from '@/helper/passwordValidator';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { doLogin } from '@/api/label';
+import { LogIn, doLogin } from '@/api/label';
+import { storeUserToken } from '@/store/persistor';
 
 type InputState = {
   value: string;
@@ -20,7 +21,11 @@ type Authentication = {
   password: string;
 }
 
-const Login: React.FC = () => {
+interface Props {
+  logIn(log: LogIn): void;
+}
+
+const Login: React.FC<Props> = ({ logIn }) => {
   const [email, setEmail] = useState<InputState>({ value: '', error: '' });
   const [password, setPassword] = useState<InputState>({ value: '', error: '' });
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -31,14 +36,14 @@ const Login: React.FC = () => {
 
   const client = useQueryClient();
 
-  const { mutate } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: (auth: Authentication) => doLogin(auth),
     onSuccess: () => {
       client.invalidateQueries();
     }
   });
 
-  const onLoginPressed = () => {
+  const onLoginPressed = async () => {
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
 
@@ -53,7 +58,9 @@ const Login: React.FC = () => {
       name: 'baleia',
       surname: 'whale'
     }
-    mutate(auth);
+    const log = await mutateAsync(auth);
+    storeUserToken(log.message.token)
+    logIn(log)
   };
 
   return (
