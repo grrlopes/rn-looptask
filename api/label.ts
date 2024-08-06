@@ -3,7 +3,7 @@ import { getUserToken } from "@/store/persistor";
 const Env = {
   API_ADDR: "192.168.2.26",
   PORT: 8080,
-  Token: null as string | null,
+  Token: null as LogIn | null,
 };
 
 export const initializeEnv = async () => {
@@ -11,14 +11,14 @@ export const initializeEnv = async () => {
 };
 
 const headers = async () => {
-  if (!Env.Token) {
+  if (!Env.Token?.success) {
     await initializeEnv();
   }
 
   return {
     accept: 'application/json',
     'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + Env.Token,
+    Authorization: 'Bearer ' + Env.Token?.message.token,
   };
 };
 

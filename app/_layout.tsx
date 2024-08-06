@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import Login from './auth/login';
 import { LogIn } from '@/api/label';
 import { getUserToken, removeUserToken } from '@/store/persistor';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -50,8 +51,26 @@ const RootLayoutNav = () => {
   const [auth, setAuth] = useState<LogIn>()
   const queryClient = new QueryClient()
 
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const token = await getUserToken();
+      if (token) {
+        setAuth(token)
+      }
+    };
+    checkLoginStatus();
+  }, []);
+
   const doAuth = (log: LogIn): void => {
     setAuth(log)
+  }
+
+  if (auth == undefined) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
   if (!auth?.success) {
@@ -87,3 +106,10 @@ const RootLayoutNav = () => {
     </QueryClientProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  loading: {
+    flex: 1, justifyContent: 'center',
+    alignItems: 'center',
+  }
+})
