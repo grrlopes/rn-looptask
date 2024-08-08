@@ -43,6 +43,9 @@ export default function labeled() {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.TopBar}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.TopIcon}>
+          <FontAwesome name="arrow-left" size={18} />
+        </TouchableOpacity>
         <View style={styles.title}>
           <Text style={styles.titleSize}>Small</Text>
           <View style={styles.Quantity}>
@@ -55,9 +58,6 @@ export default function labeled() {
             <Text>{getItemById?.large}</Text>
           </View>
         </View>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Text >Go Back</Text>
-        </TouchableOpacity>
       </View>
       <FlatList
         showsVerticalScrollIndicator={false}
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'flex-end',
-    height: 70,
+    height: 90,
     backgroundColor: '#757575',
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
@@ -125,5 +125,12 @@ const styles = StyleSheet.create({
   },
   titleSize: {
     fontSize: 11,
+  },
+  TopIcon: {
+    paddingTop: 15,
+    paddingRight: 15,
+    paddingBottom: 10,
+    paddingLeft: 15,
+    marginLeft: -20,
   }
 })
