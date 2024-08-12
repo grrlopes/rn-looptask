@@ -2,7 +2,10 @@
   "expo": {
     "name": "toplusfive",
     "slug": "toplusfive",
-    "version": "1.1.0",
+    "version": "1.2.0",
+    "android": {
+      "versionCode": 3
+    },
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
