@@ -1,8 +1,8 @@
 import { getUserToken } from "@/store/persistor";
 
 const Env = {
-  API_ADDR: "192.168.2.26",
-  // API_ADDR: "104.248.229.75",
+  // API_ADDR: "192.168.2.26",
+  API_ADDR: "104.248.229.75",
   PORT: 8080,
   Token: null as LogIn | null,
 };
