@@ -6,49 +6,48 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import Login from './auth/login';
 import { LogIn } from '@/api/label';
-import { getUserToken, removeUserToken } from '@/store/persistor';
+import { getUserToken } from '@/store/persistor';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
+  ErrorBoundary, // Catch any errors thrown by the Layout component.
 } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: '(tabs)', // Ensure reloading on `/modal` keeps a back button present.
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
+  const [fontsLoaded, fontsError] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     Roboto: require('../assets/fonts/Roboto-Regular.ttf'),
     ...FontAwesome.font,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+    if (fontsError) {
+      console.error('Error loading fonts', fontsError);
+    }
+  }, [fontsError]);
 
   useEffect(() => {
-    if (loaded) {
+    if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [fontsLoaded]);
 
-  if (!loaded) {
-    return null;
+  if (!fontsLoaded) {
+    return null; // Return null or a splash screen while fonts are loading
   }
 
   return <RootLayoutNav />;
 }
 
 const RootLayoutNav = () => {
-  const [auth, setAuth] = useState<LogIn>()
+  const [auth, setAuth] = useState<LogIn | null>(null)
   const queryClient = new QueryClient()
 
   useEffect(() => {
@@ -56,6 +55,10 @@ const RootLayoutNav = () => {
       const token = await getUserToken();
       if (token) {
         setAuth(token)
+      } else {
+        setAuth({
+          success: false,
+        })
       }
     };
     checkLoginStatus();
