@@ -83,6 +83,7 @@ const RootLayoutNav = () => {
       </QueryClientProvider>
     )
   }
+
   return (
     <QueryClientProvider client={queryClient}>
       <Stack>
