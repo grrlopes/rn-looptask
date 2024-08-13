@@ -2,10 +2,7 @@
   "expo": {
     "name": "toplusfive",
     "slug": "toplusfive",
-    "version": "1.2.0",
-    "android": {
-      "versionCode": 3
-    },
+    "version": "1.2.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -22,6 +19,7 @@
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
