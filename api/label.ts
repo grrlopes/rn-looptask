@@ -19,7 +19,7 @@ const headers = async () => {
   return {
     accept: 'application/json',
     'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + Env.Token?.message.token,
+    // Authorization: 'Bearer ' + Env.Token?.message.token,
   };
 };
 
