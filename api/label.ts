@@ -1,9 +1,8 @@
 import { getUserToken } from "@/store/persistor";
 
 const Env = {
-  // API_ADDR: "192.168.2.26",
-  API_ADDR: "104.248.229.75",
-  PORT: 8080,
+  API_ADDR: "looptask.uk",
+  PORT: 443,
   Token: null as LogIn | null,
 };
 
@@ -19,7 +18,7 @@ const headers = async () => {
   return {
     accept: 'application/json',
     'Content-Type': 'application/json',
-    // Authorization: 'Bearer ' + Env.Token?.message.token,
+    Authorization: 'Bearer ' + Env.Token?.message.token,
   };
 };
 
@@ -38,7 +37,7 @@ export type LogIn = {
 }
 
 export const fetchAll = async () => {
-  const url = `http://${Env.API_ADDR}:${Env.PORT}/listalltraystack`;
+  const url = `https://${Env.API_ADDR}:${Env.PORT}/listalltraystack`;
   const options = {
     method: 'GET',
     headers: await headers(),
@@ -55,7 +54,7 @@ export const fetchAll = async () => {
 };
 
 export const fetchOneById = async (id: any) => {
-  const url = `http://${Env.API_ADDR}:${Env.PORT}/fetchonelabel?id=${id}`;
+  const url = `https://${Env.API_ADDR}:${Env.PORT}/fetchonelabel?id=${id}`;
   const options = {
     method: 'GET',
     headers: await headers(),
@@ -73,7 +72,7 @@ export const fetchOneById = async (id: any) => {
 };
 
 export const addNewTray = async (data: any) => {
-  const url = `http://${Env.API_ADDR}:${Env.PORT}/createlabeled`;
+  const url = `https://${Env.API_ADDR}:${Env.PORT}/createlabeled`;
   const options = {
     method: 'POST',
     headers: await headers(),
@@ -91,7 +90,7 @@ export const addNewTray = async (data: any) => {
 };
 
 export const addNewStackTray = async (data: any) => {
-  const url = `http://${Env.API_ADDR}:${Env.PORT}/createlabelstack`;
+  const url = `https://${Env.API_ADDR}:${Env.PORT}/createlabelstack`;
   const options = {
     method: 'POST',
     headers: await headers(),
@@ -110,7 +109,7 @@ export const addNewStackTray = async (data: any) => {
 };
 
 export const doLogin = async (auth: any): Promise<LogIn> => {
-  const url = `http://${Env.API_ADDR}:${Env.PORT}/login`;
+  const url = `https://${Env.API_ADDR}:${Env.PORT}/login`;
   const options = {
     method: 'POST',
     headers: await headers(),

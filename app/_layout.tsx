@@ -6,7 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import Login from './auth/login';
 import { LogIn } from '@/api/label';
-import { getUserToken, removeUserToken } from '@/store/persistor';
+import { getUserToken } from '@/store/persistor';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 export {
@@ -50,39 +50,39 @@ const RootLayoutNav = () => {
   const [auth, setAuth] = useState<LogIn | null>(null)
   const queryClient = new QueryClient()
 
-  // useEffect(() => {
-  //   const checkLoginStatus = async () => {
-  //     const token = await getUserToken();
-  //     if (token) {
-  //       setAuth(token)
-  //     } else {
-  //       setAuth({
-  //         success: false,
-  //       })
-  //     }
-  //   };
-  //   checkLoginStatus();
-  // }, []);
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const token = await getUserToken();
+      if (token) {
+        setAuth(token)
+      } else {
+        setAuth({
+          success: false,
+        })
+      }
+    };
+    checkLoginStatus();
+  }, []);
 
-  // const doAuth = (log: LogIn): void => {
-  //   setAuth(log)
-  // }
+  const doAuth = (log: LogIn): void => {
+    setAuth(log)
+  }
 
-  // if (auth == undefined) {
-  //   return (
-  //     <View style={styles.loading}>
-  //       <ActivityIndicator size="large" />
-  //     </View>
-  //   );
-  // }
+  if (auth == undefined) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
-  // if (!auth?.success) {
-  //   return (
-  //     <QueryClientProvider client={queryClient}>
-  //       <Login logIn={doAuth} />
-  //     </QueryClientProvider>
-  //   )
-  // }
+  if (!auth?.success) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <Login logIn={doAuth} />
+      </QueryClientProvider>
+    )
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
