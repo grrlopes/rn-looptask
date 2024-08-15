@@ -48,7 +48,13 @@ export default function RootLayout() {
 
 const RootLayoutNav = () => {
   const [auth, setAuth] = useState<LogIn | null>(null)
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 2
+      }
+    }
+  })
 
   useEffect(() => {
     const checkLoginStatus = async () => {
