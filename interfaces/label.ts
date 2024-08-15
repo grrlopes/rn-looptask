@@ -1,14 +1,15 @@
 import { message } from "./message"
 
-export interface LabeledStack {
+interface LabeledStack {
   error: string
   message: message[]
   success: boolean
 }
 
-export interface Labeled {
+interface Labeled {
   error: string
   message: message
   success: boolean
 }
 
+export { Labeled, LabeledStack }

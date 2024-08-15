@@ -1,6 +1,6 @@
 import { User } from "./user"
 
-export interface Tray {
+interface Tray {
   id: string
   trayid: string
   size: string
@@ -10,11 +10,11 @@ export interface Tray {
   updated_at: string
 }
 
-export interface TrayLabel {
+interface TrayLabel {
   id?: string
   trayid: string
   size: string
   done: boolean
 }
 
-
+export { TrayLabel, Tray }

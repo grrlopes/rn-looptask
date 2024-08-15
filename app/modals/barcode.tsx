@@ -8,6 +8,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useGlobalSearchParams } from 'expo-router';
 import useStoreLabel from '@/store/labeled';
 import { TrayLabel } from '@/interfaces/tray';
+import ErrorPage from '@/components/ErrorPage';
 
 const barcode = () => {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -44,9 +45,11 @@ const barcode = () => {
   if (!permission.granted) {
     // Camera permissions are not granted yet.
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="Grant permission" />
+      <View style={styles.containerError}>
+        <ErrorPage message="We need your permission to access the camera" backgroundColor={"#E0E0E0"} />
+        <TouchableOpacity style={styles.button} onPress={requestPermission}>
+          <Text style={styles.buttonText}>Grant Permission</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -202,6 +205,29 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+  },
+  containerError: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  button: {
+    backgroundColor: '#757575',
+    paddingVertical: 14,
+    paddingHorizontal: 32,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '600',
+    alignSelf: "center"
   },
 });
 

@@ -24,7 +24,12 @@ export default function labeled() {
   if (error) {
     return (
       <>
-        <ErrorPage message={error.message} />
+        <View style={styles.TopBarError}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.TopIconError} >
+            <FontAwesome name="arrow-left" size={18} />
+          </TouchableOpacity>
+        </View >
+        <ErrorPage message={error.message} backgroundColor={"E0E0E0"} />
         <View style={styles.footBar}>
           <Link href={{ pathname: "/modals/barcode", params: { id: id, } }} asChild>
             <TouchableOpacity>
@@ -132,5 +137,28 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingLeft: 15,
     marginLeft: -20,
-  }
+  },
+  TopIconError: {
+    paddingTop: 15,
+    paddingRight: 20,
+    paddingBottom: 10,
+    paddingLeft: 15,
+    marginLeft: 20
+  },
+  TopBarError: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
+    height: 90,
+    backgroundColor: '#757575',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+    borderTopWidth: 0.1,
+    borderTopColor: '#ccc',
+    paddingBottom: 4,
+  },
+
 })

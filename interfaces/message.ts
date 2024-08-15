@@ -1,7 +1,7 @@
 import { Tray } from "./tray"
 import { User } from "./user"
 
-export interface message {
+interface message {
   id: string
   trays: Tray[]
   created_at: string
@@ -16,9 +16,9 @@ export interface message {
   large_count: number
 }
 
-export interface estimate {
+interface estimate {
   small: number,
   large: number,
 }
 
-
+export { estimate, message }

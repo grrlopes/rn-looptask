@@ -1,4 +1,4 @@
-export interface LogIn {
+interface LogIn {
   error?: null | string;
   message?: {
     created_at: string;
@@ -12,11 +12,11 @@ export interface LogIn {
   success: boolean;
 }
 
-export interface Authentication {
+interface Authentication {
   name: string;
   surname: string;
   email: string;
   password: string;
 }
 
-
+export { Authentication, LogIn }

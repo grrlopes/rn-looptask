@@ -1,44 +1,53 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
 
 interface Props {
-  message: string
+  message: string;
+  backgroundColor: string,
 }
 
-const ErrorPage = (props: Props) => {
+const ErrorPage = ({ message, backgroundColor }: Props) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.square}>
-        <View style={styles.msgtext}>
-          <Text>{props.message}</Text>
-        </View>
+    <View style={styles(backgroundColor).container}>
+      <View style={styles().card}>
+        <Text style={styles().errorIcon}>⚠️</Text>
+        <Text style={styles().message}>{message}</Text>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default ErrorPage
+export default ErrorPage;
 
-const styles = StyleSheet.create({
+const styles = (props?: any) => StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "row",
-    backgroundColor: "#E0E0E0",
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: props?.backgroundColor,
   },
-  square: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 2,
-    borderWidth: 0.2,
-    height: 100,
-    alignSelf: "center",
-    alignItems: "center",
+  card: {
+    width: '90%',
+    backgroundColor: '#ffffff',
+    padding: 24,
+    borderRadius: 8,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 4,
   },
-  msgtext: {
-    flex: 1,
-    alignSelf: "center",
-    alignContent: "center",
-    alignItems: "center"
-  }
-
-})
+  errorIcon: {
+    fontSize: 60,
+    marginBottom: 16,
+    color: '#d9534f',
+  },
+  message: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginBottom: 24,
+    color: '#333333',
+  },
+});
