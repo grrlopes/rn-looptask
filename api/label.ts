@@ -1,3 +1,4 @@
+import { LogIn } from "@/interfaces/auth";
 import { getUserToken } from "@/store/persistor";
 
 const Env = {
@@ -18,23 +19,9 @@ const headers = async () => {
   return {
     accept: 'application/json',
     'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + Env.Token?.message.token,
+    Authorization: 'Bearer ' + Env.Token?.message?.token,
   };
 };
-
-export type LogIn = {
-  error: null | string;
-  message: {
-    created_at: string;
-    email: string;
-    id: string;
-    name: string;
-    surname: string;
-    token: string;
-    updated_at: string;
-  };
-  success: boolean;
-}
 
 export const fetchAll = async () => {
   const url = `https://${Env.API_ADDR}:${Env.PORT}/listalltraystack`;

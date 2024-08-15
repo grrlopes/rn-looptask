@@ -2,62 +2,11 @@ import { fetchAll } from '@/api/label';
 import CurrentWeek from '@/components/CurrentWeek';
 import EstimativeQty from '@/components/EstimativeQty';
 import { splitMessagesByWeek } from '@/helper/MessageByWeek';
+import { LabeledStack } from '@/interfaces/label';
 import useStoreLabel from '@/store/labeled';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { ActivityIndicator, RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
-
-
-export interface LabeledStack {
-  error: string
-  message: message[]
-  success: boolean
-}
-
-export interface message {
-  id: string
-  trays: Tray[]
-  created_at: string
-  updated_at: string
-  owner: User
-  estimate: {
-    small: number,
-    large: number
-  }
-  tray_count: number
-  small_count: number
-  large_count: number
-}
-
-export interface Labeled {
-  error: string
-  message: message
-  success: boolean
-}
-
-export interface Tray {
-  id: string
-  trayid: string
-  size: string
-  userid: User
-  done: boolean
-  created_at: string
-  updated_at: string
-}
-
-export interface TrayLabel {
-  id?: string
-  trayid: string
-  size: string
-  done: boolean
-}
-
-export interface User {
-  id: string
-  name: string
-  surname: string
-  email: string
-}
 
 export default function TabOneScreen() {
   const addItem = useStoreLabel((state) => state.addItem);

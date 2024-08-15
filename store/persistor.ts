@@ -1,5 +1,5 @@
-import { LogIn } from '@/api/label';
 import { decodeToken } from '@/helper/token';
+import { LogIn } from '@/interfaces/auth';
 import * as SecureStore from 'expo-secure-store';
 
 // Constants for keys

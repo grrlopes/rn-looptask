@@ -6,20 +6,14 @@ import Button from '@/components/button/Button';
 import { emailValidator } from '@/helper/emailValidator';
 import { passwordValidator } from '@/helper/passwordValidator';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { LogIn, doLogin } from '@/api/label';
+import { doLogin } from '@/api/label';
 import { storeUserToken } from '@/store/persistor';
+import { Authentication, LogIn } from '@/interfaces/auth';
 
-type InputState = {
+interface InputState {
   value: string;
   error: string;
 };
-
-type Authentication = {
-  name: string;
-  surname: string;
-  email: string;
-  password: string;
-}
 
 interface Props {
   logIn(log: LogIn): void;
@@ -59,7 +53,9 @@ const Login: React.FC<Props> = ({ logIn }) => {
       surname: 'whale'
     }
     const log = await mutateAsync(auth);
-    storeUserToken(log.message.token)
+    if (log.message) {
+      storeUserToken(log.message.token)
+    }
     logIn(log)
   };
 

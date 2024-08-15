@@ -5,9 +5,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addNewTray } from '@/api/label';
 import { Button as Buttons, CheckBox } from '@rneui/themed';
 import { FontAwesome } from '@expo/vector-icons';
-import { TrayLabel } from '../(tabs)';
 import { useGlobalSearchParams } from 'expo-router';
 import useStoreLabel from '@/store/labeled';
+import { TrayLabel } from '@/interfaces/tray';
 
 const barcode = () => {
   const [facing, setFacing] = useState<CameraType>('back');

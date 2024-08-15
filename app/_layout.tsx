@@ -5,9 +5,9 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import Login from './auth/login';
-import { LogIn } from '@/api/label';
 import { getUserToken } from '@/store/persistor';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { LogIn } from '@/interfaces/auth';
 
 export {
   ErrorBoundary, // Catch any errors thrown by the Layout component.

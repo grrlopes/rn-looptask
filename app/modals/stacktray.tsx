@@ -3,11 +3,7 @@ import { View, StyleSheet, Button, Text } from 'react-native';
 import { Input } from '@rneui/themed';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addNewStackTray } from '@/api/label';
-
-export interface estimate {
-  small: number,
-  large: number,
-}
+import { estimate } from '@/interfaces/message';
 
 const StackTray = () => {
   const [small, setSmall] = useState<string>("");

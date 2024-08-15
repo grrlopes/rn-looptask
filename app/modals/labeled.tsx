@@ -1,13 +1,13 @@
 import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Link, router, useGlobalSearchParams } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
-import { Labeled } from '../(tabs)';
 import { fetchOneById } from '@/api/label';
 import LabelById from '@/components/LabelById';
 import ErrorPage from '@/components/ErrorPage';
 import { FontAwesome } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 import useStoreLabel from '@/store/labeled';
+import { Labeled } from '@/interfaces/label';
 
 export default function labeled() {
   const { id } = useGlobalSearchParams<{ id: string }>();

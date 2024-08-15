@@ -6,9 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchAll } from '@/api/label';
 import CurrentWeek from '@/components/CurrentWeek';
 import { ActivityIndicator } from 'react-native';
-import { LabeledStack } from '.';
 import { Link } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { LabeledStack } from '@/interfaces/label';
 
 const MyDatePicker = () => {
   const [date, setDate] = useState<Date>(new Date());
