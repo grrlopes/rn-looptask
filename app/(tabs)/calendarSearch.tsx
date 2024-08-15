@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { View, Button, StyleSheet, TouchableHighlight, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAll } from '@/api/label';
-import CurrentWeek from '@/components/CurrentWeek';
 import { ActivityIndicator } from 'react-native';
 import { Link } from 'expo-router';
 import { LabeledStack } from '@/interfaces/label';

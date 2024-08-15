@@ -1,4 +1,6 @@
-import { LogIn } from "@/interfaces/auth";
+import { Authentication, LogIn } from "@/interfaces/auth";
+import { estimate } from "@/interfaces/message";
+import { TrayLabel } from "@/interfaces/tray";
 import { getUserToken } from "@/store/persistor";
 
 const Env = {
@@ -40,7 +42,7 @@ export const fetchAll = async () => {
   return json;
 };
 
-export const fetchOneById = async (id: any) => {
+export const fetchOneById = async (id: string) => {
   const url = `https://${Env.API_ADDR}:${Env.PORT}/fetchonelabel?id=${id}`;
   const options = {
     method: 'GET',
@@ -58,7 +60,7 @@ export const fetchOneById = async (id: any) => {
   return json;
 };
 
-export const addNewTray = async (data: any) => {
+export const addNewTray = async (data: TrayLabel) => {
   const url = `https://${Env.API_ADDR}:${Env.PORT}/createlabeled`;
   const options = {
     method: 'POST',
@@ -76,7 +78,7 @@ export const addNewTray = async (data: any) => {
   return json;
 };
 
-export const addNewStackTray = async (data: any) => {
+export const addNewStackTray = async (data: estimate) => {
   const url = `https://${Env.API_ADDR}:${Env.PORT}/createlabelstack`;
   const options = {
     method: 'POST',
@@ -95,7 +97,7 @@ export const addNewStackTray = async (data: any) => {
   return json;
 };
 
-export const doLogin = async (auth: any): Promise<LogIn> => {
+export const doLogin = async (auth: Authentication): Promise<LogIn> => {
   const url = `https://${Env.API_ADDR}:${Env.PORT}/login`;
   const options = {
     method: 'POST',
