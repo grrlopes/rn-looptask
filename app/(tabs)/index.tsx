@@ -7,6 +7,7 @@ import useStoreLabel from '@/store/labeled';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { ActivityIndicator, RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSpring, animated } from '@react-spring/native';
 
 export default function TabOneScreen() {
   const addItem = useStoreLabel((state) => state.addItem);
@@ -15,6 +16,7 @@ export default function TabOneScreen() {
     queryKey: ['labels'],
     queryFn: fetchAll,
   });
+
   const onRefresh = async () => {
     setRefreshing(true);
     try {
@@ -26,6 +28,12 @@ export default function TabOneScreen() {
     }
   };
 
+  const slideAnimation = useSpring({
+    from: { opacity: 0, translateY: 110 },
+    to: { opacity: 1, translateX: 330 },
+    config: { tension: 40, friction: 8, duration: 2500 },
+  });
+
   if (isLoading) {
     return <ActivityIndicator size={"large"} color={"#000000"} style={{ flex: 1, alignItems: "center", backgroundColor: "#E0E0E0" }} />;
   }
@@ -34,16 +42,20 @@ export default function TabOneScreen() {
     return <Text>{error.message}</Text>;
   }
 
-  const { previousWeek, currentWeek, currentDay } = splitMessagesByWeek(data?.message)
+  const { previousWeek, currentWeek, currentDay } = splitMessagesByWeek(data?.message);
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false} refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-        />
-      }>
+      <ScrollView
+        style={styles.scroll}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      >
         <View style={styles.newestContainer}>
           <Text style={styles.newestTitle}>Current week</Text>
           <Text style={styles.newestToday}>Today</Text>
@@ -68,30 +80,27 @@ export default function TabOneScreen() {
           <Text style={styles.newestLabel}>Labeled</Text>
           <Text style={styles.newestLabel}>Total</Text>
         </View>
-        {
-          currentWeek.map(item => {
-            addItem({ id: item.id, small: item.small_count, large: item.large_count })
-            const dateparse = new Date(item.created_at)
+        <animated.View style={slideAnimation}>
+          {currentWeek.map((item) => {
+            addItem({ id: item.id, small: item.small_count, large: item.large_count });
+            const dateparse = new Date(item.created_at);
             return (
               <CurrentWeek dateParse={dateparse} key={item.id} id={item.id} owner={item.owner} trayCount={item.tray_count} />
-            )
-          })
-        }
-        <View style={styles.PreviewsWeekContainer}>
-          <Text style={styles.newestTitle}>Previews Week</Text>
-        </View>
-        {
-          previousWeek.map(item => {
-            addItem({ id: item.id, small: item.small_count, large: item.large_count })
-            const dateparse = new Date(item.created_at)
+            );
+          })}
+          <View style={styles.PreviewsWeekContainer}>
+            <Text style={styles.newestTitle}>Previews Week</Text>
+          </View>
+          {previousWeek.map((item) => {
+            addItem({ id: item.id, small: item.small_count, large: item.large_count });
+            const dateparse = new Date(item.created_at);
             return (
               <CurrentWeek dateParse={dateparse} key={item.id} id={item.id} owner={item.owner} trayCount={item.tray_count} />
-            )
-          })
-        }
-
+            );
+          })}
+        </animated.View>
       </ScrollView>
-    </SafeAreaView >
+    </SafeAreaView>
   );
 }
 
@@ -99,7 +108,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#E0E0E0",
-    // paddingTop: Platform.OS === 'android' ? 25 : 0
   },
   scroll: {
     marginHorizontal: 5,
@@ -108,7 +116,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     paddingBottom: 5,
-    alignItems: "center"
+    alignItems: "center",
   },
   newestTitle: {
     fontSize: 19,
@@ -119,13 +127,13 @@ const styles = StyleSheet.create({
   newestToday: {
     fontSize: 17,
     fontWeight: "400",
-    fontStyle: "italic"
+    fontStyle: "italic",
   },
   labelContainer: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   today: {
     flex: 1,
@@ -158,7 +166,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     paddingTop: 25,
     paddingBottom: 5,
-    alignItems: "center"
+    alignItems: "center",
   },
-
 });

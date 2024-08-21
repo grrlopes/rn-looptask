@@ -9,11 +9,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { doLogin } from '@/api/label';
 import { storeUserToken } from '@/store/persistor';
 import { Authentication, LogIn } from '@/interfaces/auth';
+import { useSpring, animated } from '@react-spring/native';
 
 interface InputState {
   value: string;
   error: string;
-};
+}
 
 interface Props {
   logIn(log: LogIn): void;
@@ -34,7 +35,7 @@ const Login: React.FC<Props> = ({ logIn }) => {
     mutationFn: (auth: Authentication) => doLogin(auth),
     onSuccess: () => {
       client.invalidateQueries();
-    }
+    },
   });
 
   const onLoginPressed = async () => {
@@ -46,58 +47,79 @@ const Login: React.FC<Props> = ({ logIn }) => {
       setPassword({ ...password, error: passwordError });
       return;
     }
+
     const auth: Authentication = {
       email: email.value,
       password: password.value,
       name: 'baleia',
-      surname: 'whale'
-    }
+      surname: 'whale',
+    };
     const log = await mutateAsync(auth);
     if (log.message) {
-      storeUserToken(log.message.token)
+      storeUserToken(log.message.token);
     }
-    logIn(log)
+    logIn(log);
   };
+
+  const emailSpring = useSpring({
+    to: { scale: email.value ? 1.1 : 1 },
+    config: { tension: 170, friction: 12 },
+  });
+
+  const slideDownAnimation = useSpring({
+    from: { opacity: 0, translateY: -200 },
+    to: { opacity: 1, translateY: 0 },
+    config: { tension: 40, friction: 8, duration: 2500 },
+  });
+
+  const passwordSpring = useSpring({
+    to: { scale: password.value ? 1.1 : 1 },
+    config: { tension: 170, friction: 12 },
+  });
 
   return (
     <>
       <View style={styles.TopBar} />
       <View style={styles.container}>
-        <View>
-          <TextInput
-            label="Email"
-            returnKeyType="next"
-            value={email.value}
-            onChangeText={(text) => setEmail({ value: text, error: '' })}
-            error={!!email.error}
-            errorText={email.error}
-            autoCapitalize="none"
-            autoComplete="email"
-            textContentType="emailAddress"
-            keyboardType="email-address"
-            style={styles.input}
-          />
-          <TextInput
-            label="Password"
-            returnKeyType="done"
-            value={password.value}
-            onChangeText={(text) => setPassword({ value: text, error: '' })}
-            error={!!password.error}
-            errorText={password.error}
-            secureTextEntry={!passwordVisible}
-            right={
-              <TxtInput.Icon
-                icon={passwordVisible ? 'eye-off' : 'eye'}
-                onPress={togglePasswordVisibility}
-              />
-            }
-            style={styles.input}
-          />
+        <animated.View style={[slideDownAnimation, styles.animatedContainer]}>
+          <animated.View style={{ transform: [{ scale: emailSpring.scale }] }}>
+            <TextInput
+              label="Email"
+              returnKeyType="next"
+              value={email.value}
+              onChangeText={(text) => setEmail({ value: text, error: '' })}
+              error={!!email.error}
+              errorText={email.error}
+              autoCapitalize="none"
+              autoComplete="email"
+              textContentType="emailAddress"
+              keyboardType="email-address"
+              style={styles.input}
+            />
+          </animated.View>
+          <animated.View style={{ transform: [{ scale: passwordSpring.scale }] }}>
+            <TextInput
+              label="Password"
+              returnKeyType="done"
+              value={password.value}
+              onChangeText={(text) => setPassword({ value: text, error: '' })}
+              error={!!password.error}
+              errorText={password.error}
+              secureTextEntry={!passwordVisible}
+              right={
+                <TxtInput.Icon
+                  icon={passwordVisible ? 'eye-off' : 'eye'}
+                  onPress={togglePasswordVisibility}
+                />
+              }
+              style={styles.input}
+            />
+          </animated.View>
           <Button mode="contained" onPress={onLoginPressed} style={{ backgroundColor: "grey" }}>
             Login
           </Button>
-        </View >
-      </View >
+        </animated.View>
+      </View>
     </>
   );
 };
@@ -107,10 +129,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   input: {
-    width: 310
+    width: 310,
+    marginBottom: 10,
   },
   TopBar: {
     flexDirection: 'row',
@@ -127,7 +150,9 @@ const styles = StyleSheet.create({
     borderTopColor: '#ccc',
     paddingBottom: 4,
   },
-
+  animatedContainer: {
+    alignItems: 'center',
+  },
 });
 
 export default Login;
