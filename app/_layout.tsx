@@ -100,6 +100,12 @@ const RootLayoutNav = () => {
           headerStyle: { backgroundColor: "#757575" },
         }}
         />
+        <Stack.Screen name="modals/profile" options={{
+          title: "",
+          presentation: 'transparentModal',
+          headerStyle: { backgroundColor: "#757575" },
+        }}
+        />
         <Stack.Screen name="modals/labeled" options={{
           title: "",
           presentation: 'modal',

@@ -4,11 +4,19 @@ import { Input } from '@rneui/themed';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addNewStackTray } from '@/api/label';
 import { estimate } from '@/interfaces/message';
+import { useSpring, animated } from '@react-spring/native';
 
 const StackTray = () => {
   const [small, setSmall] = useState<string>("");
   const [large, setLarge] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string>("");
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+
+  const springProps = useSpring({
+    translateY: isVisible ? 0 : 300, // Directly define translateY as a numeric value
+    translateX: isVisible ? 0 : 300, // Directly define translateX as a numeric value
+    config: { tension: 220, friction: 10, mass: 1 },
+  });
 
   const client = useQueryClient();
 
@@ -30,6 +38,7 @@ const StackTray = () => {
   };
 
   useEffect(() => {
+    setIsVisible(true); // Trigger the animation when the modal mounts
     if (isSuccess) {
       reset();
       setSmall("");
@@ -39,29 +48,49 @@ const StackTray = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.register}>Register</Text>
-      <Text style={styles.detail}>Enter your daily stack tray row</Text>
-      <Input
-        placeholder="Small"
-        leftIcon={{ type: 'font-awesome', name: 'angle-right' }}
-        autoCapitalize="none"
-        keyboardType="numeric"
-        value={small}
-        onChangeText={setSmall}
-        containerStyle={styles.inputContainer}
-      />
-      <Input
-        placeholder="Large"
-        leftIcon={{ type: 'font-awesome', name: "angle-right" }}
-        autoCapitalize="none"
-        keyboardType='numeric'
-        value={large}
-        onChangeText={setLarge}
-        containerStyle={styles.inputContainer}
-      />
-      <Button color={"grey"} title="Create" onPress={handleStackTray} />
-      {successMessage ? <Text style={styles.successMessage}>{successMessage}</Text> : null}
-      {error ? <Text style={styles.errorMessage}>{error.message}</Text> : null}
+      <animated.View
+        style={[
+          {
+            transform: [
+              { translateY: springProps.translateY }, // Explicitly map the translateX property
+            ],
+          },
+        ]}
+      >
+        <Text style={styles.register}>Register</Text>
+        <Text style={styles.detail}>Enter your daily stack tray row</Text>
+        <Input
+          placeholder="Small"
+          leftIcon={{ type: 'font-awesome', name: 'angle-right' }}
+          autoCapitalize="none"
+          keyboardType="numeric"
+          value={small}
+          onChangeText={setSmall}
+          containerStyle={styles.inputContainer}
+        />
+      </animated.View>
+      <animated.View
+        style={[
+          {
+            transform: [
+              { translateX: springProps.translateX }, // Explicitly map the translateX property
+            ],
+          },
+        ]}
+      >
+        <Input
+          placeholder="Large"
+          leftIcon={{ type: 'font-awesome', name: "angle-right" }}
+          autoCapitalize="none"
+          keyboardType='numeric'
+          value={large}
+          onChangeText={setLarge}
+          containerStyle={styles.inputContainer}
+        />
+        <Button color={"grey"} title="Create" onPress={handleStackTray} />
+        {successMessage ? <Text style={styles.successMessage}>{successMessage}</Text> : null}
+        {error ? <Text style={styles.errorMessage}>{error.message}</Text> : null}
+      </animated.View>
     </View>
   );
 };
