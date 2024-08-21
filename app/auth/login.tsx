@@ -60,42 +60,45 @@ const Login: React.FC<Props> = ({ logIn }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View>
-        <TextInput
-          label="Email"
-          returnKeyType="next"
-          value={email.value}
-          onChangeText={(text) => setEmail({ value: text, error: '' })}
-          error={!!email.error}
-          errorText={email.error}
-          autoCapitalize="none"
-          autoComplete="email"
-          textContentType="emailAddress"
-          keyboardType="email-address"
-          style={styles.input}
-        />
-        <TextInput
-          label="Password"
-          returnKeyType="done"
-          value={password.value}
-          onChangeText={(text) => setPassword({ value: text, error: '' })}
-          error={!!password.error}
-          errorText={password.error}
-          secureTextEntry={!passwordVisible}
-          right={
-            <TxtInput.Icon
-              icon={passwordVisible ? 'eye-off' : 'eye'}
-              onPress={togglePasswordVisibility}
-            />
-          }
-          style={styles.input}
-        />
-        <Button mode="contained" onPress={onLoginPressed} style={{ backgroundColor: "grey" }}>
-          Login
-        </Button>
+    <>
+      <View style={styles.TopBar} />
+      <View style={styles.container}>
+        <View>
+          <TextInput
+            label="Email"
+            returnKeyType="next"
+            value={email.value}
+            onChangeText={(text) => setEmail({ value: text, error: '' })}
+            error={!!email.error}
+            errorText={email.error}
+            autoCapitalize="none"
+            autoComplete="email"
+            textContentType="emailAddress"
+            keyboardType="email-address"
+            style={styles.input}
+          />
+          <TextInput
+            label="Password"
+            returnKeyType="done"
+            value={password.value}
+            onChangeText={(text) => setPassword({ value: text, error: '' })}
+            error={!!password.error}
+            errorText={password.error}
+            secureTextEntry={!passwordVisible}
+            right={
+              <TxtInput.Icon
+                icon={passwordVisible ? 'eye-off' : 'eye'}
+                onPress={togglePasswordVisibility}
+              />
+            }
+            style={styles.input}
+          />
+          <Button mode="contained" onPress={onLoginPressed} style={{ backgroundColor: "grey" }}>
+            Login
+          </Button>
+        </View >
       </View >
-    </View >
+    </>
   );
 };
 
@@ -108,7 +111,23 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 310
-  }
+  },
+  TopBar: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
+    height: 60,
+    backgroundColor: '#757575',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+    borderTopWidth: 0.1,
+    borderTopColor: '#ccc',
+    paddingBottom: 4,
+  },
+
 });
 
 export default Login;
