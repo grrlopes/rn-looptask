@@ -102,7 +102,7 @@ const RootLayoutNav = () => {
         />
         <Stack.Screen name="modals/profile" options={{
           title: "",
-          presentation: 'transparentModal',
+          presentation: 'modal',
           headerStyle: { backgroundColor: "#757575" },
         }}
         />

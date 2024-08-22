@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome } from '@expo/vector-icons';
@@ -7,6 +7,9 @@ import { fetchAll } from '@/api/label';
 import { ActivityIndicator } from 'react-native';
 import { Link } from 'expo-router';
 import { LabeledStack } from '@/interfaces/label';
+import ErrorPage from '@/components/ErrorPage';
+import { useSpring, animated } from '@react-spring/native';
+import { useIsFocused } from '@react-navigation/native';
 
 const MyDatePicker = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -17,14 +20,20 @@ const MyDatePicker = () => {
     queryFn: () => fetchAll(),
   });
 
+  const springProps = useSpring({
+    translateY: useIsFocused() ? 0 : 300, // Directly define translateX as a numeric value
+    config: { tension: 220, friction: 10, bounce: 1.0 },
+  });
+
   if (isLoading) {
     return <ActivityIndicator size={"large"} color={"#000000"} style={{ flex: 1, alignItems: "center", backgroundColor: "#E0E0E0" }} />;
   }
 
   if (error) {
-    return (<Text>fsdfdsfsdfsd</Text>)
+    return (
+      <ErrorPage message={error.message} backgroundColor={"E0E0E0"} />
+    )
   }
-
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || date;
@@ -53,6 +62,15 @@ const MyDatePicker = () => {
           </View>
         </TouchableOpacity>
       </View>
+      <animated.View
+        style={[
+          {
+            transform: [
+              { translateY: springProps.translateY }, // Explicitly map the translateX property
+            ],
+          },
+        ]}
+      >
         <ScrollView>
           {
             data?.message.map(item => {
@@ -85,6 +103,7 @@ const MyDatePicker = () => {
             })
           }
         </ScrollView>
+      </animated.View>
       <View>
         {show && modal()}
       </View>

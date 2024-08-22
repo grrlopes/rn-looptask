@@ -34,7 +34,7 @@ export default function TabLayout() {
           title: "Home",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
-            <View style={{flex: 1, flexDirection: "row", alignItems: "center", gap: 30}}>
+            <View style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: 30 }}>
               <View>
                 <Link href="../modals/stacktray" asChild>
                   <Pressable>
@@ -49,7 +49,6 @@ export default function TabLayout() {
                   </Pressable>
                 </Link>
               </View>
-
               <View>
                 <Link href="../modals/profile" asChild>
                   <Pressable>

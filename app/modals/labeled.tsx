@@ -8,13 +8,26 @@ import { FontAwesome } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 import useStoreLabel from '@/store/labeled';
 import { Labeled } from '@/interfaces/label';
+import { useEffect, useState } from 'react';
+import { useSpring, animated } from '@react-spring/native';
 
 export default function labeled() {
   const { id } = useGlobalSearchParams<{ id: string }>();
   const getItemById = useStoreLabel((state) => state.getItemById(id !== undefined ? id : ""))
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
+
   const { data, isLoading, error } = useQuery<Labeled>({
     queryKey: ['labels', id],
     queryFn: () => fetchOneById(id),
+  });
+
+  const springProps = useSpring({
+    translateY: isVisible ? 0 : 300, // Directly define translateX as a numeric value
+    config: { tension: 220, friction: 10, bounce: 1.0 },
   });
 
   if (isLoading) {
@@ -46,7 +59,7 @@ export default function labeled() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <View style={styles.TopBar}>
         <TouchableOpacity onPress={() => router.back()} style={styles.TopIcon}>
           <FontAwesome name="arrow-left" size={18} />
@@ -64,13 +77,24 @@ export default function labeled() {
           </View>
         </View>
       </View>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={data?.message.trays}
-        numColumns={2}
-        renderItem={({ item, index }) => <LabelById labels={item} count={index} />}
-        keyExtractor={item => item.id}
-      />
+      <animated.View
+        style={[
+          styles.container,
+          {
+            transform: [
+              { translateY: springProps.translateY }, // Explicitly map the translateX property
+            ],
+          },
+        ]}
+      >
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={data?.message.trays}
+          numColumns={2}
+          renderItem={({ item, index }) => <LabelById labels={item} count={index} />}
+          keyExtractor={item => item.id}
+        />
+      </animated.View>
       <View style={styles.footBar}>
         <Link href={{ pathname: "/modals/barcode", params: { id: id, } }} asChild>
           <TouchableOpacity>
@@ -87,6 +111,9 @@ export default function labeled() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   footBar: {
     flexDirection: 'row',
     justifyContent: 'space-around',
