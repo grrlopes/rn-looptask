@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
@@ -77,7 +77,7 @@ const MyDatePicker = () => {
               const dateParse = new Date(item.created_at)
               return (
                 <Link href={{ pathname: "/modals/labeled", params: { id: item.id, } }} key={item.id} asChild>
-                  <TouchableOpacity>
+                  <Pressable>
                     <View style={styles.newestMainContentContainer}>
                       <View style={styles.newestContentContainer}>
                         <View style={styles.newestContentDate}>
@@ -97,7 +97,7 @@ const MyDatePicker = () => {
                         </View>
                       </View>
                     </View>
-                  </TouchableOpacity>
+                  </Pressable>
                 </Link>
               )
             })
@@ -147,7 +147,15 @@ const styles = StyleSheet.create({
   },
   newestMainContentContainer: {
     backgroundColor: "#FFFFFF",
-    marginBottom: 10
+    marginBottom: 10,
+
+    borderRadius: 5,
+    shadowColor: '#000000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 3,
+    elevation: 2,
+
   },
   newestContentDate: {
     alignItems: "center"
