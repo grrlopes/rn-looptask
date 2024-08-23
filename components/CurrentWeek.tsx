@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Link } from 'expo-router'
-import { User } from '@/app/(tabs)';
+import { User } from '@/interfaces/user';
 
 interface Props {
   dateParse: Date;
@@ -45,12 +45,18 @@ const styles = StyleSheet.create({
     columnGap: 26,
     paddingTop: 5,
     paddingBottom: 5,
+
   },
   newestMainContentContainer: {
     flex: 1,
     flexDirection: "column",
     backgroundColor: "#FFFFFF",
-    marginBottom: 10
+    marginBottom: 10,
+    shadowColor: '#000000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 3,
+    elevation: 2,
   },
   newestContentDate: {
     alignItems: "center"
