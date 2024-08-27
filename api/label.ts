@@ -1,6 +1,6 @@
 import { Authentication, LogIn } from "@/interfaces/auth";
 import { estimate } from "@/interfaces/message";
-import { TrayLabel } from "@/interfaces/tray";
+import { TrayLabel, TrayStacked } from "@/interfaces/tray";
 import { getUserToken } from "@/store/persistor";
 
 const Env = {
@@ -80,6 +80,25 @@ export const addNewTray = async (data: TrayLabel) => {
 
 export const addNewStackTray = async (data: estimate) => {
   const url = `https://${Env.API_ADDR}:${Env.PORT}/createlabelstack`;
+  const options = {
+    method: 'POST',
+    headers: await headers(),
+    body: JSON.stringify(data)
+  };
+
+  const res = await fetch(url, options);
+
+  const json = await res.json();
+
+  if (!json.success) {
+    throw new Error(json.error);
+  }
+
+  return json;
+};
+
+export const fetchTrayStackByDate = async (data: TrayStacked) => {
+  const url = `https://${Env.API_ADDR}:${Env.PORT}/fetchtraystackbydate`;
   const options = {
     method: 'POST',
     headers: await headers(),

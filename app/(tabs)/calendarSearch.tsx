@@ -1,23 +1,26 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesome } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
-import { fetchAll } from '@/api/label';
+import { fetchTrayStackByDate } from '@/api/label';
 import { ActivityIndicator } from 'react-native';
 import { Link } from 'expo-router';
 import { LabeledStack } from '@/interfaces/label';
-import ErrorPage from '@/components/ErrorPage';
 import { useSpring, animated } from '@react-spring/native';
 import { useIsFocused } from '@react-navigation/native';
+import { TrayStacked } from '@/interfaces/tray';
 
 const MyDatePicker = () => {
   const [date, setDate] = useState<Date>(new Date());
   const [show, setShow] = useState<boolean>(false);
 
-  const { data, isLoading, error } = useQuery<LabeledStack>({
-    queryKey: ['search'],
-    queryFn: () => fetchAll(),
+  const daa: TrayStacked = {
+    created_at: date
+  }
+  const { data, isLoading } = useQuery<LabeledStack>({
+    queryKey: ['search', date],
+    queryFn: () => fetchTrayStackByDate(daa),
   });
 
   const springProps = useSpring({
@@ -29,19 +32,13 @@ const MyDatePicker = () => {
     return <ActivityIndicator size={"large"} color={"#000000"} style={{ flex: 1, alignItems: "center", backgroundColor: "#E0E0E0" }} />;
   }
 
-  if (error) {
-    return (
-      <ErrorPage message={error.message} backgroundColor={"E0E0E0"} />
-    )
-  }
-
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || date;
     setShow(false);
     setDate(currentDate);
   };
 
-  const modal = () => {
+  const dateModal = () => {
     return (
       <DateTimePicker
         value={date}
@@ -105,7 +102,7 @@ const MyDatePicker = () => {
         </ScrollView>
       </animated.View>
       <View>
-        {show && modal()}
+        {show && dateModal()}
       </View>
     </View>
   );

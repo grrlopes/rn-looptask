@@ -17,4 +17,8 @@ interface TrayLabel {
   done: boolean
 }
 
-export { TrayLabel, Tray }
+interface TrayStacked {
+  created_at: Date
+}
+
+export { TrayLabel, Tray, TrayStacked }
