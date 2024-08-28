@@ -1,5 +1,5 @@
 
-import { message } from '@/app/(tabs)';
+import { message } from '@/interfaces/message';
 import { startOfWeek, endOfWeek, subWeeks, parseISO } from 'date-fns';
 
 interface WeekSplit {

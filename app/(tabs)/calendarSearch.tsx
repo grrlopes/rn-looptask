@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Pressable } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { FontAwesome } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTrayStackByDate } from '@/api/label';
@@ -10,9 +10,10 @@ import { LabeledStack } from '@/interfaces/label';
 import { useSpring, animated } from '@react-spring/native';
 import { useIsFocused } from '@react-navigation/native';
 import { TrayStacked } from '@/interfaces/tray';
+import { subWeeks } from 'date-fns';
 
 const MyDatePicker = () => {
-  const [date, setDate] = useState<Date>(new Date());
+  const [date, setDate] = useState<Date>(subWeeks(new Date(), 4));
   const [show, setShow] = useState<boolean>(false);
 
   const daa: TrayStacked = {
@@ -32,7 +33,15 @@ const MyDatePicker = () => {
     return <ActivityIndicator size={"large"} color={"#000000"} style={{ flex: 1, alignItems: "center", backgroundColor: "#E0E0E0" }} />;
   }
 
-  const onChange = (event: any, selectedDate: any) => {
+  const showDatePicker = () => {
+    setShow(true);
+  };
+
+  const hideDatePicker = () => {
+    setShow(false);
+  };
+
+  const handleConfirm = (selectedDate: any) => {
     const currentDate = selectedDate || date;
     setShow(false);
     setDate(currentDate);
@@ -40,11 +49,13 @@ const MyDatePicker = () => {
 
   const dateModal = () => {
     return (
-      <DateTimePicker
-        value={date}
+      <DateTimePickerModal
+        date={date}
+        isVisible={show}
         mode="date"
-        display="calendar"
-        onChange={onChange}
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+        themeVariant='light'
       />
     )
   }
@@ -52,7 +63,7 @@ const MyDatePicker = () => {
   return (
     <View style={styles.container}>
       <View style={styles.btnCalendar}>
-        <TouchableOpacity onPress={() => setShow(true)} style={styles.touch}>
+        <TouchableOpacity onPress={showDatePicker} style={styles.touch}>
           <View style={styles.search}>
             <FontAwesome name="search" style={styles.searchIcon} />
             <Text style={styles.searchTxt}>{date.toDateString()}</Text>
