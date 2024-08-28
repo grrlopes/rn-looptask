@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "toplusfive",
+    "name": "looptask",
     "slug": "toplusfive",
-    "version": "1.3.2",
+    "version": "1.4.0",
     "orientation": "portrait",
     "icon": "./assets/images/work-process.png",
     "scheme": "myapp",
@@ -19,7 +19,7 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 6,
+      "versionCode": 7,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/work-process.png",
         "backgroundColor": "#ffffff"
@@ -27,7 +27,7 @@
       "permissions": [
         "android.permission.CAMERA"
       ],
-      "package": "com.glopes.toplusfive"
+      "package": "com.glopes.looptask"
     },
     "web": {
       "bundler": "metro",
